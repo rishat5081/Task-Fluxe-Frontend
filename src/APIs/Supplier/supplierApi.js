@@ -1,4 +1,5 @@
 import {
+  addProduct_toSupplier,
   addSupplier,
   baseURL,
   getCompany_SupplierInformation,
@@ -60,5 +61,16 @@ export const updateSupplierCompanyInfo = async (
   });
 };
 
+export const addProducttoSupplier = async (supplierUUID, productList) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(baseURL + addProduct_toSupplier, {
+        supplierUUID,
+        productList,
+      })
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};
 export const onSuccessSupplier = "Supplier Added Successfully";
 export const onFailedSupplier = "Error! Adding Supplier";

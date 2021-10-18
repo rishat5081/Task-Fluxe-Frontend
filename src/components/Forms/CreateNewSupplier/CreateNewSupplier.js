@@ -94,11 +94,14 @@ const CreateNewSupplier = ({ createSupplier }) => {
     } else {
       await addSupplierAPi(selectedCompanyUUID, email, supplierName)
         .then((response) => {
-          if (response) {
+          if (response.status === "Email Already Exists") {
+            callErrorToast("Supplier Already Exists");
+            return;
+          } else {
             console.log(response);
-
             createSupplier({
-              id: response.supplier.supplierUUID,
+              supplierUUID: response.supplier.supplierUUID,
+              companyUUID: selectedCompanyUUID,
               companyName: response.companies.companyName,
               supplierName: response.supplier.supplierName,
               supplierEmail: response.supplier.supplierEmail,
@@ -108,13 +111,11 @@ const CreateNewSupplier = ({ createSupplier }) => {
               status: `--`,
             });
             onHide();
-
             callSuccessToast(onSuccessSupplier);
           }
         })
         .catch((error) => {
           if (error) {
-            console.log(error);
             callErrorToast(onFailedSupplier);
           }
         });
@@ -129,10 +130,10 @@ const CreateNewSupplier = ({ createSupplier }) => {
     try {
       //calling an api for the company names
       await getCompanyNames()
+        .then((dbResponse) => dbResponse.companies)
         .then((response) => {
-          console.log(response);
-          if (response) {
-            const names = response.companies.map((company) => {
+          if (response.length > 0) {
+            const names = response.map((company) => {
               return {
                 label: company.companyName,
                 value: company.companyUUID,
@@ -144,17 +145,22 @@ const CreateNewSupplier = ({ createSupplier }) => {
             callSuccessToast(getCompanyNamesSuucess);
             setFieldsLoading(false);
             return response;
+          } else {
+            setFieldsLoading(true);
+            callErrorToast("No Company Found");
           }
         })
         .catch((error) => {
           if (error) {
             console.log(error);
+            setFieldsLoading(true);
             callErrorToast(getCompanyNamesError);
             onHide();
           }
         });
     } catch (error) {
       console.error("Error: ", error);
+      setFieldsLoading(true);
       callToast(getCompanyNamesError);
       onHide();
     }

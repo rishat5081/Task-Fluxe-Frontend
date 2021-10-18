@@ -80,6 +80,7 @@ import axios from "axios";
 import { fields, supplierFields, schema } from "./supplierSchema";
 import React from "react";
 import {
+  addProducttoSupplier,
   getSupplierCompanyDetails,
   updateSupplierCompanyInfo,
 } from "APIs/Supplier/supplierApi";
@@ -90,16 +91,20 @@ import {
  */
 const Supplier = ({ companyInfo, supplierId }) => {
   const { register, handleSubmit, errors, control } = useFormWithYup(schema);
-  const [selectedOptions, setSelectedOptions] = useState(null);
+  const [selectedProducts, setSelectedProducts] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [supplierProducts, setSupplierProducts] = useState(null);
+  const [companyProducts, setCompanyProducts] = useState(true);
+  const [companyFiles, setCompanyFiles] = useState(true);
   const [loadingData, setLoadingData] = useState(true);
   const [supplierUUID, setSupplierUUID] = useState(null);
   const [companyUUID, setCompanyUUID] = useState(null);
   const [companyName, setCompanyName] = useState("");
   const [imageURL, setImageURL] = useState("/assets/images/supplier-pic.png");
 
-  //on form submission
+  //on form submission for the supplier and company information
   const onSubmit = async (data) => {
+    //setting the data to the API and updating the record in the database
     await updateSupplierCompanyInfo(companyUUID, supplierUUID, data)
       .then((response) => {
         if (response) {
@@ -113,27 +118,36 @@ const Supplier = ({ companyInfo, supplierId }) => {
       });
   };
 
+  //getting the API response
   const gettingCompanyDetails = async () => {
-    await getSupplierCompanyDetails(companyInfo, supplierId).then(
-      (response) => {
-        resetInputData(response.companies, response.companies.Suppliers[0]);
-        setCompanyUUID(response.companies.companyUUID);
-        setCompanyName(response.companies.companyName);
-        setSupplierUUID(response.companies.Suppliers[0].supplierUUID);
-        setImageURL(response.companies.companyLogo);
-      }
-    );
+    await getSupplierCompanyDetails(companyInfo, supplierId)
+      .then((response) => response.companies)
+      .then((companies) => {
+        resetInputData(companies, companies.Suppliers[0]);
+        setCompanyUUID(companies.companyUUID);
+        setCompanyName(companies.companyName);
+
+        setCompanyFiles(companies.CompanyFiles);
+        setSupplierUUID(companies.Suppliers[0].supplierUUID);
+        setSupplierProducts(companies.Suppliers[0].Products);
+        setImageURL(companies.companyLogo);
+
+        //changeing the product UUID and name to label and value because of the React select doc
+        const products = companies.Products.map((product) => ({
+          value: product.productUUID,
+          label: product.productName,
+        }));
+
+        setCompanyProducts(products);
+
+        setLoadingData(false);
+      });
   };
 
+  //on load calling the api
   useEffect(async () => {
     gettingCompanyDetails();
   }, []);
-
-  const handleFormSubmission = (e) => {
-    e.preventDefault();
-    console.log(e);
-    console.log(e.target.selectProduct);
-  };
 
   //here the fields are getting updated as per the API response
   const resetInputData = (company, supplier) => {
@@ -154,20 +168,10 @@ const Supplier = ({ companyInfo, supplierId }) => {
         }
       }
     });
-
-    setLoadingData(false);
   };
 
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
-
-  const handleChange1 = (selectedOptions) => {
-    console.log("On Change");
-    console.log(selectedOptions);
-    // setSelectedOptions(selectedOptions);
+  const handleChange = (selectedOptions) => {
+    setSelectedProducts(selectedOptions);
   };
 
   const fileChangedHandler = async (event) => {
@@ -212,10 +216,26 @@ const Supplier = ({ companyInfo, supplierId }) => {
     }
   };
 
-  const updateProductBTN = () => {
+  const updateProductBTN = async () => {
     console.log("updateProductBTN");
+
+    await addProducttoSupplier(supplierUUID, selectedProducts)
+      .then((res) => {
+        if (res === "Successfully Added") {
+          callSuccessToast(res);
+          const newProducts = [...supplierProducts, ...selectedProducts];
+          setSupplierProducts(newProducts);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          callErrorToast("Error Adding Product");
+          return;
+        }
+      });
   };
   const updateNotesBTN = () => {
+    console.log(supplierProducts);
     console.log("updateNotesBTN");
   };
 
@@ -296,24 +316,22 @@ const Supplier = ({ companyInfo, supplierId }) => {
           <OverviewTable payload={table} />
           <S.Title>Products</S.Title>
           <S.Products>
-            <S.Product>Spatula</S.Product>
-            <S.Product>Spoons</S.Product>
-            <S.Product>Pans</S.Product>
+            {supplierProducts.length === 0
+              ? "You Don't any Products"
+              : supplierProducts.map(({ productName }, index) => (
+                  <S.Product key={index}>{productName}</S.Product>
+                ))}
           </S.Products>
           <ReactSelect
-            options={options}
+            options={companyProducts}
             isMulti
-            handleChange={handleChange1}
+            handleChange={handleChange}
             placeholder={"Please Select Products"}
             height={"50px"}
           />
-          <FadedButton
-            type="button"
-            className="btn btn-small btn-success"
-            onClick={updateProductBTN}
-          >
-            Update Products
-          </FadedButton>
+          <S.FadedButton type="button" onClick={updateProductBTN}>
+            Add Products
+          </S.FadedButton>
           <S.Title>Notes</S.Title>
           <S.Notes>
             <S.Note>

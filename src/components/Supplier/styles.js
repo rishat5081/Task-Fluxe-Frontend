@@ -64,12 +64,24 @@ export const DetailTitle = styled.span`
   margin-right: 15px;
 `;
 
-// export const DetailDesc = styled.span`
-//   font-size: ${theme.font.md.size};
-//   font-weight: 500;
+export const Button = styled.button`
+  font-family: "Inter", sans-serif;
 
-//   color: ${theme.main.colors.text};
-// `;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+`;
+export const FadedButton = styled(Button)`
+  font-size: ${theme.font.sm.size};
+  font-weight: 700;
+  color: #fff;
+  margin-top: 10px;
+  text-align: center;
+  padding: 8px 15px;
+  border-radius: 12px;
+
+  background-color: ${theme.main.colors.primary};
+`;
 
 export const Products = styled.div`
   margin-bottom: 24px;

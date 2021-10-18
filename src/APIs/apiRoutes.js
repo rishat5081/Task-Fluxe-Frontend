@@ -5,3 +5,4 @@ export const addSupplier = "/supplier/addSupplier";
 export const getCompany_SupplierInformation =
   "/company/getCompany_SupplierInformation";
 export const updateSupplier_CompanyInfo = "/supplier/updateCompanySupplierInfo";
+export const addProduct_toSupplier = "/supplier/addProductToSupplier";

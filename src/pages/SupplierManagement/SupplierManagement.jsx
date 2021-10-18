@@ -97,7 +97,10 @@ const SupplierManagament = () => {
         onClick={() =>
           showDrawer({
             content: (
-              <Supplier supplierId={newSupplier} companyInfo={newSupplier} />
+              <Supplier
+                supplierId={newSupplier.supplierUUID}
+                companyInfo={newSupplier.companyUUID}
+              />
             ),
           })
         }
@@ -155,7 +158,6 @@ const SupplierManagament = () => {
   useEffect(() => {
     //calling the function of the api to get information from the server
     getDataFromAPI();
-    console.log(updateImage);
   }, [updateImage]);
   // This will be use to transform data to JSX element
   // when data fetched from api
@@ -205,8 +207,10 @@ const SupplierManagament = () => {
       </S.TableOptions>
       {loadingAPIResponse === true ? (
         <Spinner />
-      ) : (
+      ) : linkedTableData.length > 0 ? (
         <Table payload={{ data: linkedTableData, columns: table.columns }} />
+      ) : (
+        "No Record Found"
       )}
     </DashboardLayout>
   );
