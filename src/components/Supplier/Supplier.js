@@ -43,6 +43,7 @@ const Supplier = ({ companyInfo, supplierId }) => {
 
   //on form submission for the supplier and company information
   const onSubmit = async (data) => {
+    console.log(data);
     //setting the data to the API and updating the record in the database
     await updateSupplierCompanyInfo(companyUUID, supplierUUID, data)
       .then((response) => {
@@ -273,7 +274,7 @@ const Supplier = ({ companyInfo, supplierId }) => {
                       fontWeight: 500,
                     }}
                     key={id}
-                    value={value === null ? undefined : value}
+                    value={value === null ? "" : value}
                     label={label}
                     error={errors[name]?.message}
                     type={type}
@@ -297,7 +298,7 @@ const Supplier = ({ companyInfo, supplierId }) => {
                         fontWeight: 500,
                       }}
                       key={id}
-                      value={value === null ? undefined : value}
+                      value={value === null ? "" : value}
                       label={label}
                       error={errors[name]?.message}
                       type={type}

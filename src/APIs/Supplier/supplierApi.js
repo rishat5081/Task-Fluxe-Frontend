@@ -60,6 +60,7 @@ export const updateSupplierCompanyInfo = async (
         supplierEmail: formData.supplierEmail,
         supplierName: formData.supplierName,
         supplierPhone: formData.supplierPhone,
+        supplierPosition: formData.supplierPosition,
       })
       .then((response) => resolve(response.data))
       .catch(reject);
