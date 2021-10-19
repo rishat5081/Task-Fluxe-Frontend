@@ -8,10 +8,9 @@ export const Title = styled.h3`
   font-size: ${theme.font.bg.size};
   font-weight: 700;
   margin-top: 15px;
-
+  text-align: center;
   color: ${theme.main.colors.primary};
-
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 `;
 
 export const Input = styled.input`
@@ -100,13 +99,6 @@ export const Notes = styled.div`
   margin-bottom: 24px;
 `;
 
-export const Note = styled.p`
-  font-size: 15px;
-  font-weight: 500;
-
-  color: #3d3d3d;
-`;
-
 export const Attachments = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -118,14 +110,15 @@ export const Attachment = styled.div`
   display: flex;
   align-items: center;
   width: fit-content;
-  padding: 7px 12px;
-  margin-right: 20px;
+  padding: 10px 12px;
+  margin: 10px;
+  // margin-right: 20px;
   border-radius: 12px;
   background-color: #ededed;
   color: #8a8a8a;
 `;
 
-export const AttachmentName = styled.span`
+export const AttachmentName = styled.a`
   font-size: 14px;
   color: #8a8a8a;
 

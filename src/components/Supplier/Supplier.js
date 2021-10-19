@@ -1,67 +1,3 @@
-// import { useEffect } from "react";
-
-// import { details, table } from "constants/components/supplier";
-// import { OverviewTable, Icon } from "components";
-// import * as S from "./styles";
-
-// /**
-//  * This component will be only use in Drawer as a content
-//  * @param {string} supplierId Id to fetch supplier data
-//  */
-// const Supplier = ({ supplierId }) => {
-//   useEffect(() => {
-//     // This will be use to fetch
-//     // supplier information from endpoints
-//     // with {supplierId}
-//   }, []);
-
-//   return (
-//     <S.Supplier>
-//       <S.Title>AMA</S.Title>
-//       <S.Image src="/assets/images/supplier-pic.png" alt="Supplier" />
-//       {details.map((detail) => (
-//         <S.Details key={detail.header}>
-//           <S.DetailsTitle>{detail.header}</S.DetailsTitle>
-//           {detail.rows.map((row) => (
-//             <S.Detail key={row.title}>
-//               <S.DetailTitle>{row.title}</S.DetailTitle>
-//               <S.DetailDesc>{row.desc}</S.DetailDesc>
-//             </S.Detail>
-//           ))}
-//         </S.Details>
-//       ))}
-//       <S.Title>Invoice Overview</S.Title>
-//       <OverviewTable payload={table} />
-//       <S.Title>Products</S.Title>
-//       <S.Products>
-//         <S.Product>Spatula</S.Product>
-//         <S.Product>Spoons</S.Product>
-//         <S.Product>Pans</S.Product>
-//       </S.Products>
-//       <S.Title>Notes</S.Title>
-//       <S.Notes>
-//         <S.Note>
-//           I&apos;ve been working with this client for the past 3 months for consultin services. It
-//           seem we&apos;ll continue to work together.
-//         </S.Note>
-//       </S.Notes>
-//       <S.Title>Attachments</S.Title>
-//       <S.Attachments>
-//         <S.Attachment>
-//           <Icon name="insert-drive-file" />
-//           <S.AttachmentName>File for discussion - 1</S.AttachmentName>
-//         </S.Attachment>
-//         <S.Attachment>
-//           <Icon name="insert-drive-file" />
-//           <S.AttachmentName>file.pdf</S.AttachmentName>
-//         </S.Attachment>
-//       </S.Attachments>
-//     </S.Supplier>
-//   );
-// };
-
-// export default Supplier;
-
 import { useEffect, useState, Fragment, useContext } from "react";
 import { table } from "./supplier_data";
 import { useFormWithYup } from "hooks";
@@ -72,18 +8,20 @@ import {
   ReactSelect,
   SubmitButton,
   Input,
-  FadedButton,
   Spinner,
+  TextArea,
 } from "components";
 import * as S from "./styles";
-import axios from "axios";
 import { fields, supplierFields, schema } from "./supplierSchema";
 import React from "react";
 import {
+  addFilestoSupplier,
+  addNotestoSupplier,
   addProducttoSupplier,
   getSupplierCompanyDetails,
   updateSupplierCompanyInfo,
 } from "APIs/Supplier/supplierApi";
+import { uploadCompanyImage } from "APIs/apis";
 
 /**
  * This component will be only use in Drawer as a content
@@ -95,7 +33,8 @@ const Supplier = ({ companyInfo, supplierId }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [supplierProducts, setSupplierProducts] = useState(null);
   const [companyProducts, setCompanyProducts] = useState(true);
-  const [companyFiles, setCompanyFiles] = useState(true);
+  const [companyNotes, setCompanyNotes] = useState(true);
+  const [supplierFiles, setSupplierFiles] = useState(true);
   const [loadingData, setLoadingData] = useState(true);
   const [supplierUUID, setSupplierUUID] = useState(null);
   const [companyUUID, setCompanyUUID] = useState(null);
@@ -123,13 +62,15 @@ const Supplier = ({ companyInfo, supplierId }) => {
     await getSupplierCompanyDetails(companyInfo, supplierId)
       .then((response) => response.companies)
       .then((companies) => {
+        // console.log(companies);
         resetInputData(companies, companies.Suppliers[0]);
         setCompanyUUID(companies.companyUUID);
         setCompanyName(companies.companyName);
 
-        setCompanyFiles(companies.CompanyFiles);
         setSupplierUUID(companies.Suppliers[0].supplierUUID);
+        setCompanyNotes(companies.Suppliers[0].supplierNote);
         setSupplierProducts(companies.Suppliers[0].Products);
+        setSupplierFiles(companies.Suppliers[0].SupplierFiles);
         setImageURL(companies.companyLogo);
 
         //changeing the product UUID and name to label and value because of the React select doc
@@ -174,30 +115,27 @@ const Supplier = ({ companyInfo, supplierId }) => {
     setSelectedProducts(selectedOptions);
   };
 
+  //uploading image to the server and updating
   const fileChangedHandler = async (event) => {
     const file = event.target.files[0];
+    const types = /jpeg|jpg|png|gif/;
+    const fileBreakdown = file.type.split("/");
+    const extnames = types.test(fileBreakdown[1].toLowerCase());
+
     if (file.size > 1000000) {
       callErrorToast("File is to Big, Max Size is 1 MB");
+    }
+    if (!extnames) {
+      callErrorToast("Only JPG, JPEG, PNG are Allowed.");
     } else {
       const formData = new FormData();
       formData.append("Image", file);
       formData.append("supplierUUID", supplierUUID);
       formData.append("companyUUID", companyUUID);
 
-      await axios
-        .post("http://localhost:8521/company/uploadImage", formData, {
-          onUploadProgress: (progressEvent) => {
-            const percentage = parseInt(
-              Math.round((progressEvent.loaded * 100) / progressEvent.total)
-            );
-            callSuccessToast(`Uploading File ${percentage}%`);
-          },
-        })
-        .then((res) => res.data)
+      await uploadCompanyImage(formData)
         .then((response) => {
-          console.log(response);
           if (response.type) {
-            console.log(response.messages);
             callErrorToast(response.messages);
             return;
           } else {
@@ -217,13 +155,14 @@ const Supplier = ({ companyInfo, supplierId }) => {
   };
 
   const updateProductBTN = async () => {
-    console.log("updateProductBTN");
-
     await addProducttoSupplier(supplierUUID, selectedProducts)
       .then((res) => {
         if (res === "Successfully Added") {
           callSuccessToast(res);
-          const newProducts = [...supplierProducts, ...selectedProducts];
+          const newProductArray = selectedProducts.map((product) => ({
+            productName: product.label,
+          }));
+          const newProducts = [...supplierProducts, ...newProductArray];
           setSupplierProducts(newProducts);
         }
       })
@@ -234,11 +173,73 @@ const Supplier = ({ companyInfo, supplierId }) => {
         }
       });
   };
-  const updateNotesBTN = () => {
-    console.log(supplierProducts);
-    console.log("updateNotesBTN");
+  const onAddTextArea = (event) => {
+    //adding text to the note state
+    setCompanyNotes(event.target.value);
   };
 
+  //submitting the note to the server through the API
+  const updateNotesBTN = async () => {
+    await addNotestoSupplier(supplierUUID, companyNotes)
+      .then((response) => {
+        if (response) {
+          console.log(response);
+          callSuccessToast(response);
+          return;
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          console.log(err);
+          callErrorToast(err);
+          return;
+        }
+      });
+  };
+
+  // uploading the files to the db
+  const uploadAttachment = async (event) => {
+    event.preventDefault();
+    const file = event.target.files[0];
+    const types = /pdf/;
+    const fileBreakdown = file.type.split("/");
+    const extnames = types.test(fileBreakdown[1].toLowerCase());
+
+    if (file.size > 1000000) {
+      callErrorToast("File is to Big, Max Size is 1 MB");
+    }
+    if (!extnames) {
+      callErrorToast("Only PDF is Allowed.");
+    } else {
+      const formData = new FormData();
+      formData.append("Attachment", file);
+      formData.append("supplierUUID", supplierUUID);
+      formData.append("companyUUID", companyUUID);
+
+      await addFilestoSupplier(formData)
+        .then((response) => {
+          if (response.type) {
+            callErrorToast(response.messages);
+            return;
+          } else {
+            const newFiles = [
+              ...supplierFiles,
+              { fileTitle: response.fileTitle, filePath: response.filePath },
+            ];
+            console.log(newFiles);
+            setSupplierFiles(newFiles);
+            callSuccessToast(`File Uploading Successfully`);
+            return;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error) {
+            callErrorToast(error);
+          }
+        });
+    }
+  };
   //setting default image if the image src have any error then this image will be displayed
   const setDefaultImage = (event) =>
     (event.target.src = "/assets/images/supplier-pic.png");
@@ -253,7 +254,6 @@ const Supplier = ({ companyInfo, supplierId }) => {
           <S.Image src={imageURL} alt="Supplier" onError={setDefaultImage} />
           <div style={{ width: "fit-content" }}>
             <Input
-              id="companyImage"
               onChange={fileChangedHandler}
               type="file"
               placeholder="Upload a New Picture"
@@ -334,30 +334,36 @@ const Supplier = ({ companyInfo, supplierId }) => {
           </S.FadedButton>
           <S.Title>Notes</S.Title>
           <S.Notes>
-            <S.Note>
-              I&apos;ve been working with this client for the past 3 months for
-              consultin services. It seem we&apos;ll continue to work together.
-            </S.Note>
+            <TextArea
+              placeholder="Type your notes here"
+              defaultValue={companyNotes}
+              onBlur={onAddTextArea}
+            ></TextArea>
           </S.Notes>
-
-          <FadedButton
-            type="button"
-            className="btn btn-small btn-success"
-            onClick={updateNotesBTN}
-          >
+          <S.FadedButton type="button" onClick={updateNotesBTN}>
             Update Notes
-          </FadedButton>
+          </S.FadedButton>
 
           <S.Title>Attachments</S.Title>
+
+          <div style={{ width: "100%" }}>
+            <Input
+              onChange={uploadAttachment}
+              type="file"
+              placeholder="Upload a New File"
+            />
+          </div>
           <S.Attachments>
-            <S.Attachment>
-              <Icon name="insert-drive-file" />
-              <S.AttachmentName>File for discussion - 1</S.AttachmentName>
-            </S.Attachment>
-            <S.Attachment>
-              <Icon name="insert-drive-file" />
-              <S.AttachmentName>file.pdf</S.AttachmentName>
-            </S.Attachment>
+            {supplierFiles.length === 0
+              ? "You Don't any Products"
+              : supplierFiles.map(({ filePath, fileTitle }, index) => (
+                  <S.Attachment key={index}>
+                    <Icon name="insert-drive-file" />
+                    <S.AttachmentName href={filePath} target="_blank">
+                      {fileTitle}
+                    </S.AttachmentName>
+                  </S.Attachment>
+                ))}
           </S.Attachments>
         </S.Supplier>
       )}
@@ -366,59 +372,3 @@ const Supplier = ({ companyInfo, supplierId }) => {
 };
 
 export default Supplier;
-
-//   return (
-//     <form onSubmit={handleFormSubmission}>
-//       <S.Supplier>
-//         <S.Input defaultValue={"companyName"} id={"companyName"} />
-//         <S.Title>AMA</S.Title>
-//         <S.Image src="/assets/images/supplier-pic.png" alt="Supplier" />
-//         {details.map((detail) => (
-//           <S.Details key={detail.header}>
-//             <S.DetailsTitle>{detail.header}</S.DetailsTitle>
-//             {detail.rows.map((row) => (
-//               <S.Detail key={row.title}>
-//                 <S.DetailTitle>{row.title}</S.DetailTitle>
-//                 <S.Input key={row.desc} defaultValue={row.desc} id={row.id} />
-//               </S.Detail>
-//             ))}
-//           </S.Details>
-//         ))}
-//         <S.Title>Invoice Overview</S.Title>
-//         <OverviewTable payload={table} />
-//         <S.Title>Products</S.Title>
-//         <Select
-//           id={"selectProduct"}
-//           closeMenuOnSelect={false}
-//           // value={selectedOptions}
-//           onChange={handleChange}
-//           components={animatedComponents}
-//           // defaultValue={[colourOptions[4], colourOptions[5]]}
-//           isMulti
-//           options={options}
-//         />
-//         <S.Title>Notes</S.Title>
-//         <S.Notes>
-//           <S.Note>
-//             I&apos;ve been working with this client for the past 3 months for
-//             consultin services. It seem we&apos;ll continue to work together.
-//           </S.Note>
-//         </S.Notes>
-//         <S.Title>Attachments</S.Title>
-//         <S.Attachments>
-//           <S.Attachment>
-//             <Icon name="insert-drive-file" />
-//             <S.AttachmentName>File for discussion - 1</S.AttachmentName>
-//           </S.Attachment>
-//           <S.Attachment>
-//             <Icon name="insert-drive-file" />
-//             <S.AttachmentName>file.pdf</S.AttachmentName>
-//           </S.Attachment>
-//         </S.Attachments>
-//       </S.Supplier>
-//       <button type={"submit"}>Submit</button>
-//     </form>
-//   );
-// };
-
-// export default Supplier;

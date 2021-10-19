@@ -2,8 +2,11 @@ import {
   baseURL,
   getCompaniesNames,
   getSupplierManagementDashboard,
+  uploadCompanyImages,
 } from "./apiRoutes";
+
 import axios from "axios";
+import { callSuccessToast } from "components/Toast/toast";
 
 //getting all the companies from the server end
 export const getCompanyNames = async () => {
@@ -24,10 +27,17 @@ export const getSupplierManagementDashBoard_API = async () => {
   });
 };
 
-export const uploadCompanyImage = async () => {
+export const uploadCompanyImage = async (formData) => {
   return new Promise((resolve, reject) => {
     axios
-      .get(baseURL + getCompaniesNames)
+      .post(baseURL + uploadCompanyImages, formData, {
+        onUploadProgress: (progressEvent) => {
+          const percentage = parseInt(
+            Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          );
+          callSuccessToast(`Uploading File ${percentage}%`);
+        },
+      })
       .then((response) => resolve(response.data))
       .catch(reject);
   });
