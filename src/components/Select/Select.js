@@ -50,7 +50,7 @@ const Select = ({
           <S.SelectMenu alignment={alignment}>
             {items.map((item, index) => (
               <S.SelectItem
-                key={item.label}
+                key={item.value}
                 onClick={() => handleClick(index, item.value)}
               >
                 {item.label}

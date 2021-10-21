@@ -17,6 +17,7 @@ const InvoiceManagement = () => {
   const { onShow: showDrawer } = useContext(DrawerContext);
 
   const addInvoice = (newInvoice) => {
+    // console.log(newInvoice);
     setTableData((prev) => [...prev, newInvoice]);
     setIsTableTransformed(false);
   };
@@ -30,7 +31,8 @@ const InvoiceManagement = () => {
               showDrawer({
                 content: (
                   <span style={{ color: "#ccc" }}>
-                    There is no component for this field. This will be updated, later.
+                    There is no component for this field. This will be updated,
+                    later.
                   </span>
                 ),
               })

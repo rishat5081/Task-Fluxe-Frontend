@@ -8,19 +8,31 @@ import * as yup from "yup";
 // Error messages can get from store or constant by locale
 export const schema = yup.object({
   supplierName: yup.string().required("Supplier is required"),
-  dueDate: yup.date().typeError("Valid date is required").required("Date is required"),
-  invoiceAmount: yup.number().typeError("Amount is required").positive("Should be positive!"),
-  paidAmount: yup.number().typeError("Amount is required").positive("Should be positive!"),
+  productName: yup.string().required("Product Name is required"),
+  invoiceName: yup.string().required("Invoice Name is required"),
+  dueDate: yup
+    .date()
+    .typeError("Valid date is required")
+    .required("Date is required"),
+  invoiceAmount: yup
+    .number()
+    .typeError("Amount is required")
+    .positive("Should be positive!"),
+  paidAmount: yup
+    .number()
+    .typeError("Amount is required")
+    .positive("Should be positive!"),
   status: yup.string().required("Status is required"),
-  attachment: yup.mixed().required("File is required"),
+  invoiceFile: yup.mixed().required("File is required"),
 });
 
 // Fields for the form
 // If you add type as "select", you need to add "items" object for the selection
-export const fields = [
+export const createInvoiceFields = [
   {
     name: "supplierName",
     type: "select",
+    onSelect: "selectSupplier",
     items: [
       {
         value: "vcxSupplements",
@@ -32,12 +44,47 @@ export const fields = [
     placeholder: "Click to select",
     label: "Supplier",
   },
-  { name: "dueDate", type: "date", placeholder: "20/02/2021", label: "Due Date" },
-  { name: "invoiceAmount", type: "number", placeholder: "$29.99", label: "Invoice Amount" },
-  { name: "paidAmount", type: "number", placeholder: "$29.99", label: "Paid Amount" },
+  {
+    name: "productName",
+    type: "select",
+    onSelect: "selectProduct",
+    items: [
+      {
+        value: null,
+        label: "Plese Select Product",
+      },
+    ],
+    placeholder: "Click to select",
+    label: "Product Name",
+  },
+  {
+    name: "dueDate",
+    type: "date",
+    placeholder: "20/02/2021",
+    label: "Due Date",
+  },
+  {
+    name: "invoiceName",
+    type: "input",
+    placeholder: "Invoice for Games",
+    label: "Invoice Name",
+  },
+  {
+    name: "invoiceAmount",
+    type: "number",
+    placeholder: "$29.99",
+    label: "Invoice Amount",
+  },
+  {
+    name: "paidAmount",
+    type: "number",
+    placeholder: "$29.99",
+    label: "Paid Amount",
+  },
   {
     name: "status",
     type: "select",
+    onSelect: "selectStatus",
     items: [
       { value: "paid", label: "Paid" },
       { value: "waiting", label: "Waiting" },
@@ -45,5 +92,11 @@ export const fields = [
     label: "Status",
     placeholder: "Click to select status",
   },
-  { name: "attachment", type: "file", placeholder: "example.pdf", label: "Attachment" },
+  {
+    name: "invoiceFile",
+    // onChange: "selectInvoiceFile",
+    type: "file",
+    placeholder: "example.pdf",
+    label: "Attachment",
+  },
 ];

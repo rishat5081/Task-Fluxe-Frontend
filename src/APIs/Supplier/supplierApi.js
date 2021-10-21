@@ -3,6 +3,7 @@ import {
   addProduct_toSupplier,
   addSupplier,
   baseURL,
+  getAllSupplierNames,
   getCompany_SupplierInformation,
   updateSupplier_CompanyInfo,
   uploadSupplierFiles,
@@ -10,6 +11,7 @@ import {
 import axios from "axios";
 import { callSuccessToast } from "components/Toast/toast";
 
+// ------------------------------------  Start of Supplier Management Page ------------------------------------------------
 //getting all the companies from the server end
 export const addSupplierAPi = async (
   companyUUID,
@@ -111,3 +113,22 @@ export const addFilestoSupplier = async (formData) => {
 };
 export const onSuccessSupplier = "Supplier Added Successfully";
 export const onFailedSupplier = "Error! Adding Supplier";
+// ------------------------------------ End of Supplier Management Page ------------------------------------------------
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
+// ------------------------------------  Start of Invoice Management Page ------------------------------------------------
+export const getAllSupplier_Name = async () => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(baseURL + getAllSupplierNames)
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};
