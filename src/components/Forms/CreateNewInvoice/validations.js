@@ -9,7 +9,7 @@ import * as yup from "yup";
 export const schema = yup.object({
   supplierName: yup.string().required("Supplier is required"),
   productName: yup.string().required("Product Name is required"),
-  invoiceName: yup.string().required("Invoice Name is required"),
+  invoiceTitle: yup.string().required("Invoice Name is required"),
   dueDate: yup
     .date()
     .typeError("Valid date is required")
@@ -18,10 +18,12 @@ export const schema = yup.object({
     .number()
     .typeError("Amount is required")
     .positive("Should be positive!"),
+  // .moreThan(yup.ref("paidAmount")),
   paidAmount: yup
     .number()
     .typeError("Amount is required")
-    .positive("Should be positive!"),
+    .positive("Should be positive!")
+    .lessThan(yup.ref("invoiceAmount")),
   status: yup.string().required("Status is required"),
   invoiceFile: yup.mixed().required("File is required"),
 });
@@ -64,7 +66,7 @@ export const createInvoiceFields = [
     label: "Due Date",
   },
   {
-    name: "invoiceName",
+    name: "invoiceTitle",
     type: "input",
     placeholder: "Invoice for Games",
     label: "Invoice Name",

@@ -1,6 +1,13 @@
 import styled from "styled-components";
 
-export const Invoice = styled.div``;
+export const recordNotFound = styled.div`
+  margin: 20px 0px;
+  padding: 40px;
+  text-align: center;
+  font-weight: 600;
+  color: #ff0000;
+  font-size: large;
+`;
 
 export const SeeNotes = styled.span`
   color: #9c9c9c;

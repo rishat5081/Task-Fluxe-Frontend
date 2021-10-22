@@ -22,3 +22,5 @@ export const uploadSupplierFiles = "/supplier/uploadSupplierFiles";
  */
 // ------------------------------------  Start of Invoice Management Page ------------------------------------------------
 export const getAllSupplierNames = "/invoice/getAllSupplierNames";
+export const getAllInvoices = "/invoice/getAllInvoices";
+export const create_a_NewInvoices = "/invoice/createInvoice";

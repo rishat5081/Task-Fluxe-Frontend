@@ -1,18 +1,22 @@
 import { useState, useEffect, useContext, useCallback } from "react";
 
 import { DashboardLayout } from "layouts";
-import { Table, TableLink, Forms } from "components";
+import { Table, TableLink, Forms, Spinner } from "components";
 
 import { ModalContext } from "store/modalContext";
 import { DrawerContext } from "store/drawerContext";
 import { table } from "constants/pages/invoiceManagement";
 import * as S from "./styles";
+import { getAllDashboardInvoices } from "APIs/Invoice/invoice";
+import { callErrorToast, callSuccessToast } from "components/Toast/toast";
 
 const InvoiceManagement = () => {
   // This state will be fetch from API, for now it's constant from file.
   const [tableData, setTableData] = useState(table.data);
   const [transformedTableData, setTransformedTableData] = useState([]);
   const [isTableTransformed, setIsTableTransformed] = useState(false);
+  const [loadingStatus, setLoadingStatus] = useState(true);
+  const [invoiceFromDatabase, setInvoiceFromDatabase] = useState(false);
   const { onShow: showModal } = useContext(ModalContext);
   const { onShow: showDrawer } = useContext(DrawerContext);
 
@@ -38,15 +42,15 @@ const InvoiceManagement = () => {
               })
             }
           >
-            {el.col1}
+            {el.supplierName}
           </TableLink>
         );
-        const newCol10 = <S.SeeNotes>{el.col10}</S.SeeNotes>;
+        const newCol10 = <S.SeeNotes>{el.invoiceNotes}</S.SeeNotes>;
 
         return {
           ...el,
-          col1: newCol1,
-          col10: newCol10,
+          supplierName: newCol1,
+          invoiceNotes: newCol10,
         };
       });
 
@@ -54,7 +58,27 @@ const InvoiceManagement = () => {
     });
   }, [showDrawer, tableData]);
 
+  /**
+   *
+   * getting all the  invoices from the server
+   * here is the function to get the invoices from the API
+   */
+
+  const getAllInvoiceAPI = () => {
+    getAllDashboardInvoices()
+      .then((response) => {
+        setLoadingStatus(false);
+      })
+      .catch((err) => {
+        if (err) {
+          callErrorToast;
+          setLoadingStatus(true);
+          console.error(err);
+        }
+      });
+  };
   useEffect(() => {
+    getAllInvoiceAPI();
     if (!isTableTransformed) {
       transformTableData();
       setIsTableTransformed(true);
@@ -73,7 +97,15 @@ const InvoiceManagement = () => {
 
   return (
     <DashboardLayout title="Invoice Management" topbarAction={topbarAction}>
-      <Table payload={{ data: transformedTableData, columns: table.columns }} />
+      {loadingStatus === true ? (
+        <Spinner />
+      ) : invoiceFromDatabase === false ? (
+        <S.recordNotFound>No Invoice Found</S.recordNotFound>
+      ) : (
+        <Table
+          payload={{ data: transformedTableData, columns: table.columns }}
+        />
+      )}
     </DashboardLayout>
   );
 };

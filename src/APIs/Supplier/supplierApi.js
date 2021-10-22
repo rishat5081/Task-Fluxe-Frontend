@@ -122,13 +122,3 @@ export const onFailedSupplier = "Error! Adding Supplier";
  *
  *
  */
-
-// ------------------------------------  Start of Invoice Management Page ------------------------------------------------
-export const getAllSupplier_Name = async () => {
-  return new Promise((resolve, reject) => {
-    axios
-      .get(baseURL + getAllSupplierNames)
-      .then((response) => resolve(response.data))
-      .catch(reject);
-  });
-};
