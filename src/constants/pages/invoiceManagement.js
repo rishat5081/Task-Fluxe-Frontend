@@ -38,6 +38,7 @@ export const table = {
       invoiceDueDate: "01/04/2021",
       invoiceTotal: "$100,00",
       invoicePaid: "$8,88",
+      outstandingAmount: "$8,88",
       invoiceStatusTitle: "Paid",
       invoiceFile: "Invoice.pdf",
       invoiceNotes: "See notes",
@@ -71,6 +72,10 @@ export const table = {
     {
       Header: "Paid Amount",
       accessor: "invoicePaid",
+    },
+    {
+      Header: "Outstanding Amount",
+      accessor: "outstandingAmount",
     },
     {
       Header: "Status",

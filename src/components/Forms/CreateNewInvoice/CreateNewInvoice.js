@@ -96,16 +96,17 @@ const CreateNewInvoice = ({ onAddInvoice }) => {
       .catch((err) => console.log(err));
 
     onAddInvoice({
-      col1: supplierName,
-      col2: "ACV Gummies",
-      col3: "Invoice",
-      col4: "105",
-      col5: dueDate.toLocaleDateString(),
-      col6: `$${invoiceAmount}`,
-      col7: `$${paidAmount}`,
-      col8: capitalize(status),
-      col9: invoiceFile[0]?.name || "No file uploaded",
-      col10: "See notes",
+      supplierName,
+      productName: "ACV Gummies",
+      invoiceTitle,
+      invoiceID: "105",
+      invoiceDueDate: dueDate.toLocaleDateString(),
+      invoiceTotal: `$${invoiceAmount}`,
+      invoicePaid: `$${paidAmount}`,
+      outstandingAmount: `${+invoiceAmount - +paidAmount}`,
+      invoiceStatusTitle: capitalize(status),
+      invoiceFile: invoiceFile[0]?.name || "No file uploaded",
+      invoiceNotes: "See notes",
     });
     onHide();
   };

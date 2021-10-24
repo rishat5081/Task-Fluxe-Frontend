@@ -21,42 +21,69 @@ const InvoiceManagement = () => {
   const { onShow: showDrawer } = useContext(DrawerContext);
 
   const addInvoice = (newInvoice) => {
-    // console.log(newInvoice);
     setTableData((prev) => [...prev, newInvoice]);
     setIsTableTransformed(false);
   };
 
-  const transformTableData = useCallback(() => {
-    setTransformedTableData(() => {
-      const transformedData = tableData.map((el) => {
-        const newCol1 = (
-          <TableLink
-            onClick={() =>
-              showDrawer({
-                content: (
-                  <span style={{ color: "#ccc" }}>
-                    There is no component for this field. This will be updated,
-                    later.
-                  </span>
-                ),
-              })
-            }
-          >
-            {el.supplierName}
-          </TableLink>
-        );
-        const newCol10 = <S.SeeNotes>{el.invoiceNotes}</S.SeeNotes>;
+  const transformTableData = useCallback(
+    (tableDataaaa) => {
+      setTransformedTableData(() => {
+        const transformedData = tableDataaaa.map((data) => {
+          const newCol1 = (
+            <TableLink
+              onClick={() =>
+                showDrawer({
+                  content:
+                    (data.Supplier.supplierUUID,
+                    (
+                      <span style={{ color: "#ccc" }}>
+                        There is no component for this field. This will be
+                        updated, later.
+                      </span>
+                    )),
+                })
+              }
+            >
+              {data.Supplier.supplierName}
+            </TableLink>
+          );
+          const newCol10 = (
+            <S.SeeNotes>
+              {data.invoiceNotes === null ? "No Notes" : data.invoiceNotes}
+            </S.SeeNotes>
+          );
+          const invoiceStatus = (
+            <p style={{ color: data.InvoiceStatus.invoiceStatusColor }}>
+              {data.InvoiceStatus.invoiceStatusTitle}
+            </p>
+          );
+          const invoiceFile = (
+            <a target="_blank" href={data.invoiceFile}>
+              {data.invoiceFileTitle}
+            </a>
+          );
+          return {
+            id: 1,
+            UUID: "",
+            supplierName: newCol1,
+            productName: data.Product.productName,
+            invoiceTitle: data.invoiceTitle,
+            invoiceID: data.invoiceID,
+            invoiceDueDate: data.invoiceDueDate,
+            invoiceTotal: `$${data.invoiceTotal}`,
+            invoicePaid: `$${data.invoicePaid}`,
+            outstandingAmount: `$${data.invoiceOutStanding}`,
+            invoiceStatusTitle: invoiceStatus,
+            invoiceFile: invoiceFile,
+            invoiceNotes: newCol10,
+          };
+        });
 
-        return {
-          ...el,
-          supplierName: newCol1,
-          invoiceNotes: newCol10,
-        };
+        return transformedData;
       });
-
-      return transformedData;
-    });
-  }, [showDrawer, tableData]);
+    },
+    [showDrawer, tableData]
+  );
 
   /**
    *
@@ -67,20 +94,27 @@ const InvoiceManagement = () => {
   const getAllInvoiceAPI = () => {
     getAllDashboardInvoices()
       .then((response) => {
-        setLoadingStatus(false);
+        if (response.invoiceInfo.length > 0) {
+          transformTableData(response.invoiceInfo);
+          setLoadingStatus(false);
+          setInvoiceFromDatabase(true);
+        } else {
+          setLoadingStatus(true);
+          setInvoiceFromDatabase(false);
+          callErrorToast("No Record Found. Please Add Invoice");
+        }
       })
       .catch((err) => {
         if (err) {
-          callErrorToast;
+          callErrorToast(err);
           setLoadingStatus(true);
-          console.error(err);
         }
       });
   };
   useEffect(() => {
     getAllInvoiceAPI();
     if (!isTableTransformed) {
-      transformTableData();
+      // transformTableData(tableData);
       setIsTableTransformed(true);
     }
   }, [isTableTransformed, transformTableData]);
