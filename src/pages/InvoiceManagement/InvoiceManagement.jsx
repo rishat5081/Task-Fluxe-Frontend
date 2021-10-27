@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, useCallback } from "react";
 
 import { DashboardLayout } from "layouts";
-import { Table, TableLink, Forms, Spinner } from "components";
+import { Table, TableLink, Forms, Spinner, Invoice } from "components";
 
 import { ModalContext } from "store/modalContext";
 import { DrawerContext } from "store/drawerContext";
@@ -33,14 +33,7 @@ const InvoiceManagement = () => {
             <TableLink
               onClick={() =>
                 showDrawer({
-                  content:
-                    (data.Supplier.supplierUUID,
-                    (
-                      <span style={{ color: "#ccc" }}>
-                        There is no component for this field. This will be
-                        updated, later.
-                      </span>
-                    )),
+                  content: <Invoice invoiceUUID={data.invoiceUUID} />,
                 })
               }
             >
@@ -53,9 +46,22 @@ const InvoiceManagement = () => {
             </S.SeeNotes>
           );
           const invoiceStatus = (
-            <p style={{ color: data.InvoiceStatus.invoiceStatusColor }}>
+            <p
+              style={{
+                color: data.InvoiceStatus.invoiceStatusColor,
+                fontWeight: 700,
+              }}
+            >
               {data.InvoiceStatus.invoiceStatusTitle}
             </p>
+            // <select style={{ color: data.InvoiceStatus.invoiceStatusColor }}>
+            //   {data.InvoiceStatus.invoiceStatusTitle}
+            //   <option value="null">Please Select</option>
+            //   <option value="null">Please Select</option>
+            //   <option value="null">Please Select</option>
+            //   <option value="null">Please Select</option>
+            //   <option value="null">Please Select</option>
+            // </select>
           );
           const invoiceFile = (
             <a target="_blank" href={data.invoiceFile}>

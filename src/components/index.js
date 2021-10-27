@@ -31,6 +31,7 @@ export { default as Product } from "./Product";
 export { default as Calendar } from "./Calendar/Calendar";
 export { default as Toolbar } from "./Calendar/Toolbar/Toolbar";
 export { default as Event } from "./Calendar/Event/Event";
+export { default as Invoice } from "./Invoice/Invoice.jsx";
 export { default as Hr } from "./Hr/Hr";
 export { default as Chip } from "./Chip/Chip";
 export { default as Toast } from "./Toast/toast";

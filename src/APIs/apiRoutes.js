@@ -24,3 +24,6 @@ export const uploadSupplierFiles = "/supplier/uploadSupplierFiles";
 export const getAllSupplierNames = "/invoice/getAllSupplierNames";
 export const getAllInvoices = "/invoice/getAllInvoices";
 export const create_a_NewInvoices = "/invoice/createInvoice";
+export const getSelectedInvoice = "/invoice/getSelectedInvoice";
+export const updateInvoice = "/invoice/updateInvoice";
+export const updateInvoiceAttachment = "/invoice/updateInvoiceAttachment";
