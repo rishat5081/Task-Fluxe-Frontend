@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import theme, { breakpoints } from "theme";
 
 export const ComparisonSupplier = styled.div`
   background-color: #ffffff;
@@ -38,4 +39,22 @@ export const Desc = styled.p`
   font-weight: 500;
 
   color: #4f4f4f;
+`;
+
+export const Action = styled.span`
+  display: flex;
+  align-items: center;
+  margin: 20px 10px;
+
+  font-size: ${theme.font.md.size};
+  font-weight: 500;
+
+  width: fit-content;
+
+  cursor: pointer;
+  color: ${theme.main.colors.primary};
+
+  & > svg {
+    margin-right: 5px;
+  }
 `;

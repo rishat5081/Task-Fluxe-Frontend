@@ -10,3 +10,4 @@ export { default as DailyOperationsNotes } from "./DailyOperationsNotes/DailyOpe
 export { default as DailyOperationsNewNote } from "./DailyOperationsNewNote/DailyOperationsNewNote.jsx";
 export { default as ProductsManagement } from "./ProductsManagement/ProductsManagement.jsx";
 export { default as ManagementProduct } from "./ManagementProduct/ManagementProduct.jsx";
+export { default as NotFound } from "./Not Found/notFound.jsx";

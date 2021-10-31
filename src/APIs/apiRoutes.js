@@ -27,3 +27,20 @@ export const create_a_NewInvoices = "/invoice/createInvoice";
 export const getSelectedInvoice = "/invoice/getSelectedInvoice";
 export const updateInvoice = "/invoice/updateInvoice";
 export const updateInvoiceAttachment = "/invoice/updateInvoiceAttachment";
+
+// ------------------------------------ End of Invoice Management Page ------------------------------------------------
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+// ------------------------------------  Start of Supplier Comparison Page ------------------------------------------------
+export const addNewSupplierComp = "/supplierComparison/addNewSupplierComp";
+export const getAllSupplierComp = "/supplierComparison/getAllComparisons";
+export const getSupplierCompDetails =
+  "/supplierComparison/getComparisonDetails";
+export const updateComparisonDetailsRoute =
+  "/supplierComparison/updateComparisonDetails";

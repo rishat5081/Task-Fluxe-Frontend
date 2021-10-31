@@ -54,14 +54,6 @@ const InvoiceManagement = () => {
             >
               {data.InvoiceStatus.invoiceStatusTitle}
             </p>
-            // <select style={{ color: data.InvoiceStatus.invoiceStatusColor }}>
-            //   {data.InvoiceStatus.invoiceStatusTitle}
-            //   <option value="null">Please Select</option>
-            //   <option value="null">Please Select</option>
-            //   <option value="null">Please Select</option>
-            //   <option value="null">Please Select</option>
-            //   <option value="null">Please Select</option>
-            // </select>
           );
           const invoiceFile = (
             <a target="_blank" href={data.invoiceFile}>

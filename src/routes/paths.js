@@ -11,4 +11,5 @@ export const paths = {
   dailyOperationsNotesNewNote: "/daily-operation-notes/new-note",
   productManagement: "/products-management",
   productManagementProduct: "/products-management/product/:id",
+  notFound: "/not-found",
 };

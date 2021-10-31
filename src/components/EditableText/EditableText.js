@@ -2,11 +2,18 @@ import { useState } from "react";
 
 import * as S from "./styles";
 
-const EditableText = ({ initialValue, placeholder, ...rest }) => {
+const EditableText = ({
+  initialValue,
+  placeholder,
+  selectedValue,
+  ...rest
+}) => {
   const [text, setText] = useState(initialValue);
 
   const changeHandler = (event) => {
+    console.log(event);
     setText(event.target.value);
+    selectedValue(text);
   };
 
   return (
@@ -15,7 +22,7 @@ const EditableText = ({ initialValue, placeholder, ...rest }) => {
       suppressContentEditableWarning="true"
       placeholder={placeholder}
       onChange={changeHandler}
-      spellCheck="false"
+      spellCheck="true"
       {...rest}
     >
       {text}
