@@ -44,3 +44,6 @@ export const getSupplierCompDetails =
   "/supplierComparison/getComparisonDetails";
 export const updateComparisonDetailsRoute =
   "/supplierComparison/updateComparisonDetails";
+export const getAllRating = "/supplierComparison/getAllRating";
+export const addNewSupplierforComparison =
+  "/supplierComparison/addNewSupplierforComparison";

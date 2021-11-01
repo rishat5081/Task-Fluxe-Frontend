@@ -4,6 +4,8 @@ import {
   getAllSupplierComp,
   getSupplierCompDetails,
   updateComparisonDetailsRoute,
+  getAllRating,
+  addNewSupplierforComparison,
 } from "APIs/apiRoutes";
 import axios from "axios";
 import { callSuccessToast } from "components/Toast/toast";
@@ -56,6 +58,57 @@ export const updateComparisonDetails = async (
         compTitle,
         comparisonDescription,
         comparisonStatus,
+      })
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};
+
+//getting rating for the add supplier
+export const getRatingDetails = async () => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(baseURL + getAllRating)
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};
+
+export const addNewSupplierforComp = async (
+  comparisonUUID,
+  rating,
+  companyName,
+  website,
+  email,
+  productCost,
+  productShippingCost,
+  productOtherCost,
+  productTotalCost,
+  productSalePrice,
+  productExpectedRevenue,
+  packagingOption,
+  leadTime,
+  sampleInformation,
+  comments
+) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(baseURL + addNewSupplierforComparison, {
+        comparisonUUID,
+        rating,
+        companyName,
+        website,
+        email,
+        productCost,
+        productShippingCost,
+        productOtherCost,
+        productTotalCost,
+        productSalePrice,
+        productExpectedRevenue,
+        packagingOption,
+        leadTime,
+        sampleInformation,
+        comments,
       })
       .then((response) => resolve(response.data))
       .catch(reject);
