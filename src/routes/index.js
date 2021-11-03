@@ -33,7 +33,13 @@ export const routes = [
     exact: true,
     component: P.ProductLaunchTracker,
   },
-  { path: paths.productLaunchTrackerProduct, component: P.TrackerProduct },
+  {
+    path: paths.productLaunchTrackerProduct,
+    exact: true,
+    component: (props) => <P.TrackerProduct {...props} />,
+
+    // component: P.TrackerProduct
+  },
   {
     path: paths.dailyOperationsNotes,
     exact: true,

@@ -47,3 +47,19 @@ export const updateComparisonDetailsRoute =
 export const getAllRating = "/supplierComparison/getAllRating";
 export const addNewSupplierforComparison =
   "/supplierComparison/addNewSupplierforComparison";
+
+// ------------------------------------  End of Supplier Comparison Page ------------------------------------------------
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+// ------------------------------------  Start of Product Launch Page ------------------------------------------------
+export const getProductLaunchList = "/productLaunch/getProductLaunchList";
+export const getProductNamesList = "/productLaunch/getProductNames";
+export const addExistingProduct_toLaunch =
+  "/productLaunch/addExistingProducttoLanch";
+export const addNewProduct_toLaunch = "/productLaunch/addNewProducttoLaunch";

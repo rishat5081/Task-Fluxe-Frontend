@@ -5,10 +5,16 @@ import { FadedButton, TaskTable, EditableText } from "components";
 import { trackerDetails, table } from "constants/pages/trackerProduct";
 import { ModalContext } from "store/modalContext";
 import * as S from "./styles";
+import { useHistory } from "react-router";
 
-const TrackerProduct = () => {
+const TrackerProduct = ({
+  location: {
+    state: { productInfo },
+  },
+}) => {
   const { onShow } = useContext(ModalContext);
 
+  console.log(productInfo);
   const topbarAction = {
     name: "New Launch",
     onClick: () => {
@@ -39,14 +45,21 @@ const TrackerProduct = () => {
         <S.TrackerProductDetail>
           <S.Title>Product Name</S.Title>
           <S.DescWrapper>
-            <EditableText placeholder="Product name.." initialValue="Fidget Spinner" />
+            <EditableText
+              placeholder="Product name.."
+              initialValue="Fidget Spinner"
+            />
           </S.DescWrapper>
         </S.TrackerProductDetail>
         <S.TrackerProductDetail>
           <S.Title>Comments</S.Title>
           <S.DescWrapper>
             {trackerDetails.map((detail) => (
-              <EditableText placeholder="Detail here..." initialValue={detail} key={detail}>
+              <EditableText
+                placeholder="Detail here..."
+                initialValue={detail}
+                key={detail}
+              >
                 {detail}
               </EditableText>
             ))}

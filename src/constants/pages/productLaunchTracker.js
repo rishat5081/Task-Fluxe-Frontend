@@ -1,30 +1,30 @@
 export const table = {
   data: [
     {
-      col1: "Fidget Spinners",
-      col2: "Complete",
+      productLaunchTitle: "Fidget Spinners",
+      productLaunchStatusTitle: "Complete",
     },
     {
-      col1: "ACV Gummies",
-      col2: "In Progress",
+      productLaunchTitle: "ACV Gummies",
+      productLaunchStatusTitle: "In Progress",
     },
     {
-      col1: "Spatulas",
-      col2: "In Progress",
+      productLaunchTitle: "Spatulas",
+      productLaunchStatusTitle: "In Progress",
     },
     {
-      col1: "Spoons",
-      col2: "In Progress",
+      productLaunchTitle: "Spoons",
+      productLaunchStatusTitle: "In Progress",
     },
   ],
   columns: [
     {
       Header: "Product Name",
-      accessor: "col1",
+      accessor: "productLaunchTitle",
     },
     {
       Header: "Research Status",
-      accessor: "col2",
+      accessor: "productLaunchStatusTitle",
     },
   ],
 };
