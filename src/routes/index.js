@@ -3,6 +3,8 @@ import { paths } from "./paths";
 
 export const routes = [
   { path: paths.home, exact: true, component: P.Home },
+  { path: paths.login, exact: true, component: P.Login },
+  { path: paths.signup, exact: true, component: P.SignUp },
   {
     path: paths.invoiceManagement,
     exact: true,
@@ -37,8 +39,6 @@ export const routes = [
     path: paths.productLaunchTrackerProduct,
     exact: true,
     component: (props) => <P.TrackerProduct {...props} />,
-
-    // component: P.TrackerProduct
   },
   {
     path: paths.dailyOperationsNotes,

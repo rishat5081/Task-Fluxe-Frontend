@@ -1,7 +1,7 @@
 import { Icon } from "components";
 import * as S from "./styles";
 
-const TaskTable = ({ payload: { columns, data } }) => {
+const TaskTable = ({ columns, table }) => {
   return (
     <S.Table>
       <S.TableHeader columnCount={columns.length}>
@@ -9,16 +9,17 @@ const TaskTable = ({ payload: { columns, data } }) => {
           <S.TableHeaderCell key={column}>{column}</S.TableHeaderCell>
         ))}
       </S.TableHeader>
-      {data.map((taskList) => (
-        <S.TaskList key={taskList.taskListTitle}>
+      {table.map((taskList) => (
+        <S.TaskList key={taskList.productLaunchListsUUID}>
           <S.TableSubtitleRow>
-            <S.TableSubtitle>{taskList.taskListTitle}</S.TableSubtitle>
-            <Icon name="add-filled" />
+            <S.TableSubtitle>
+              {taskList.productLaunchListsTitle}
+            </S.TableSubtitle>
           </S.TableSubtitleRow>
-          {taskList.tasklist.map((task) => (
-            <S.TableRow columnCount={columns.length}>
-              {task.map((cell) => (
-                <S.TableCell>{cell}</S.TableCell>
+          {taskList.tasklist.map((task, index) => (
+            <S.TableRow key={index} columnCount={columns.length}>
+              {task.map((cell, index) => (
+                <S.TableCell key={index}>{cell}</S.TableCell>
               ))}
             </S.TableRow>
           ))}

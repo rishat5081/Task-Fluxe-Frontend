@@ -1,7 +1,7 @@
 import { Switch, Route } from "react-router-dom";
-
+import "bootstrap/dist/css/bootstrap.css";
 import { routes } from "routes";
-import { Drawer, Modal, Toast } from "components";
+import { Drawer, Modal, NavigationBar, Toast } from "components";
 
 const App = () => {
   return (
@@ -11,6 +11,7 @@ const App = () => {
           <Route key={route.path} {...route} />
         ))}
       </Switch>
+
       <Toast />
       <Drawer />
       <Modal />

@@ -12,4 +12,6 @@ export const paths = {
   productManagement: "/products-management",
   productManagementProduct: "/products-management/product/:id",
   notFound: "/not-found",
+  login: "/login",
+  signup: "/signup",
 };

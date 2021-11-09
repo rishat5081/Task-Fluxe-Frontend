@@ -51,11 +51,9 @@ export const ButtonIcon = styled(Icon)`
 export const FadedButton = styled(Button)`
   display: flex;
   align-items: center;
-
+  color: ${theme.main.colors.primary};
   font-size: ${theme.font.sm.size};
   font-weight: 700;
-
-  color: #555555;
   background-color: #fafafa;
 
   padding: 10px 20px;

@@ -19,6 +19,6 @@ export const Chip = styled.div`
   border-radius: 12px;
 
   color: #ffffff;
-  background-color: ${(p) =>
-    p.type === "status" ? chipStatus[p.chipStyle].color : chipPriority[p.chipStyle].color};
 `;
+// background-color: ${(p) =>
+//   p.type === "status" ? chipStatus[p.chipStyle].color : chipPriority[p.chipStyle].color};

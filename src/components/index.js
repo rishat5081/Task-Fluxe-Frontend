@@ -37,4 +37,5 @@ export { default as Chip } from "./Chip/Chip";
 export { default as Toast } from "./Toast/toast";
 export { default as Spinner } from "./Spinner/Spinner";
 export { default as EditableText } from "./EditableText/EditableText";
+export { default as NavigationBar } from "./NavigationBar/NavigationBar.jsx";
 export * as Forms from "./Forms";

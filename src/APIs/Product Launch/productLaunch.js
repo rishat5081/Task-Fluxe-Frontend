@@ -1,9 +1,14 @@
 import {
   addExistingProduct_toLaunch,
   addNewProduct_toLaunch,
+  addNewTask,
   baseURL,
+  createTaskList,
+  getPriorityAndStatus,
   getProductLaunchList,
   getProductNamesList,
+  productLaunchDetails,
+  updateProductLaunchDetails,
 } from "APIs/apiRoutes";
 import axios from "axios";
 import { callSuccessToast } from "components/Toast/toast";
@@ -52,52 +57,7 @@ export const addNewProducttoLanch = async (productName) => {
       .catch(reject);
   });
 };
-
-//adding the product to supplier
-export const addProducttoSupplier = async (supplierUUID, productList) => {
-  return new Promise((resolve, reject) => {
-    axios
-      .put(baseURL + addProduct_toSupplier, {
-        supplierUUID,
-        productList,
-      })
-      .then((response) => resolve(response.data))
-      .catch(reject);
-  });
-};
-
-//adding the notes to supplier
-export const addNotestoSupplier = async (supplierUUID, note) => {
-  return new Promise((resolve, reject) => {
-    axios
-      .put(baseURL + addNote_toSupplier, {
-        supplierUUID,
-        note,
-      })
-      .then((response) => resolve(response.data))
-      .catch(reject);
-  });
-};
-
-//uploading the files to supplier
-export const addFilestoSupplier = async (formData) => {
-  return new Promise((resolve, reject) => {
-    axios
-      .post(baseURL + uploadSupplierFiles, formData, {
-        onUploadProgress: (progressEvent) => {
-          const percentage = parseInt(
-            Math.round((progressEvent.loaded * 100) / progressEvent.total)
-          );
-          callSuccessToast(`Uploading File ${percentage}%`);
-        },
-      })
-      .then((response) => resolve(response.data))
-      .catch(reject);
-  });
-};
-export const onSuccessSupplier = "Supplier Added Successfully";
-export const onFailedSupplier = "Error! Adding Supplier";
-// ------------------------------------ End of Supplier Management Page ------------------------------------------------
+// ------------------------------------ End of Product Launch Management Page ------------------------------------------------
 /**
  *
  *
@@ -106,3 +66,95 @@ export const onFailedSupplier = "Error! Adding Supplier";
  *
  *
  */
+
+// ------------------------------------ Start of Product Launch Tracking Management Page ------------------------------------------------
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
+//getting all the task lists and also the task from the server
+export const getProductTrackingDetails = async (productLaunchUUID) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(baseURL + productLaunchDetails, {
+        params: {
+          productLaunchUUID,
+        },
+      })
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};
+
+//creating new task list
+//POST
+export const createNewTaskListAPI = async (listName, productLaunchUUID) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(baseURL + createTaskList, {
+        listName,
+        productLaunchUUID,
+      })
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};
+
+//getting all the priority and status from server
+export const getProductStatus_Priorities = async () => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(baseURL + getPriorityAndStatus)
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};
+
+//POST
+export const createNewTaskAPI = async (
+  productListUUID,
+  taskName,
+  date,
+  assignedTo,
+  status,
+  priority,
+  comments
+) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(baseURL + addNewTask, {
+        productListUUID,
+        taskName,
+        date,
+        assignedTo,
+        status,
+        priority,
+        comments,
+      })
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};
+
+//PUT
+export const updateProductLaunchInformation = async (
+  productLaunchTrackerName,
+  productLaunchTrackerComment,
+  productLaunchUUID
+) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(baseURL + updateProductLaunchDetails, {
+        productLaunchTrackerName,
+        productLaunchTrackerComment,
+        productLaunchUUID,
+      })
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};

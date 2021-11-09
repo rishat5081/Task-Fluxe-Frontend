@@ -63,3 +63,19 @@ export const getProductNamesList = "/productLaunch/getProductNames";
 export const addExistingProduct_toLaunch =
   "/productLaunch/addExistingProducttoLanch";
 export const addNewProduct_toLaunch = "/productLaunch/addNewProducttoLaunch";
+// ------------------------------------  End of Product Launch Page  ------------------------------------------------
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+// ------------------------------------  Start of Product Launch Tracking Page ------------------------------------------------
+export const productLaunchDetails = "/productLaunch/getProductLaunchDetails";
+export const updateProductLaunchDetails =
+  "/productLaunch/updateProductLaunchDetails";
+export const getPriorityAndStatus = "/productLaunch/getPriorityAndStatus";
+export const createTaskList = "/productLaunch/createNewTaskList";
+export const addNewTask = "/productLaunch/addNewTask";

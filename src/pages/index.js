@@ -11,3 +11,5 @@ export { default as DailyOperationsNewNote } from "./DailyOperationsNewNote/Dail
 export { default as ProductsManagement } from "./ProductsManagement/ProductsManagement.jsx";
 export { default as ManagementProduct } from "./ManagementProduct/ManagementProduct.jsx";
 export { default as NotFound } from "./Not Found/notFound.jsx";
+export { default as SignUp } from "./Sign Up/SignUp.jsx";
+export { default as Login } from "./Login/Login.jsx";

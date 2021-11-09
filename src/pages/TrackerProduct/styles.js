@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import theme from "theme";
 export const Section = styled.section`
   background: #ffffff;
   box-shadow: 0px 24px 24px rgba(0, 0, 0, 0.03);
@@ -17,6 +17,19 @@ export const TrackerProductDetail = styled.div`
   }
 `;
 
+export const Input = styled.input`
+  font-family: "Inter", sans-serif;
+  font-size: ${theme.font.sm.size};
+
+  width: 50%;
+  border-radius: 10px;
+  border: 1px solid ${theme.main.colors.primary};
+  padding: 10px;
+  outline: none;
+  text-align: justify;
+  background: transparent;
+`;
+
 export const Title = styled.span`
   font-size: 13px;
   font-weight: 800;
@@ -29,6 +42,7 @@ export const Title = styled.span`
 `;
 
 export const DescWrapper = styled.div`
+  width: 100%;
   & > *:not(:last-child) {
     margin-bottom: 15px;
   }
@@ -49,5 +63,12 @@ export const TaskButtons = styled.div`
     margin-right: 20px;
   }
 
+  margin-bottom: 20px;
+`;
+export const FadedButton = styled.button`
+  display: flex;
+  align-items: center;
+
+  border: 1px solid ${theme.main.colors.primary};
   margin-bottom: 20px;
 `;

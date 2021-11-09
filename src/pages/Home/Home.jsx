@@ -1,10 +1,10 @@
-import { useHistory } from "react-router-dom";
+import React from "react";
+// import "./App.css";
+import "./Home.css";
+import { NavigationBar } from "components";
 
 const Home = () => {
-  const history = useHistory();
-  history.push("/supplier-management");
-
-  return <div />;
+  return <NavigationBar />;
 };
 
 export default Home;
