@@ -1,5 +1,16 @@
 export const baseURL = "http://localhost:8521";
+// ------------------------------------  Start of Supplier Management Page ------------------------------------------------
+export const signUp = "/controller/signUp";
+// ------------------------------------  Start of Supplier Management Page ------------------------------------------------
 
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 // ------------------------------------  Start of Supplier Management Page ------------------------------------------------
 export const getCompaniesNames = "/company/getNames";
 export const getSupplierManagementDashboard = "/company/getDashboard";

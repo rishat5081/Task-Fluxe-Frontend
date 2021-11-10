@@ -1,4 +1,7 @@
+import { signUpAPI } from "APIs/Web Controls/webControls";
 import { Input, NavigationBar, Select, SubmitButton } from "components";
+import { callErrorToast } from "components/Toast/toast";
+import { callSuccessToast } from "components/Toast/toast";
 import { useFormWithYup } from "hooks";
 import { Fragment } from "react";
 import { Controller } from "react-hook-form";
@@ -6,8 +9,23 @@ import { schema, fields_1 } from "./validations";
 const SignUp = () => {
   const { register, handleSubmit, errors, control } = useFormWithYup(schema);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log("Login ::: ", data);
+
+    await signUpAPI(
+      data.confirmpassword,
+      data.email,
+      data.firstname,
+      data.lastName,
+      data.password
+    )
+      .then((result) => {
+        if (result.status === "Created") callSuccessToast(result.message);
+        if (result.status === "Error") callErrorToast(result.message);
+      })
+      .catch((err) => {
+        if (err.status === "Error") callErrorToast(err.message);
+      });
   };
   return (
     <>
