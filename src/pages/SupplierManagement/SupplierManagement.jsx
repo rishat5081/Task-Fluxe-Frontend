@@ -16,7 +16,7 @@ import { table } from "constants/pages/supplierManagement";
 import * as S from "./styles";
 import { getSupplierManagementDashBoard_API } from "APIs/apis";
 
-const SupplierManagament = () => {
+const SupplierManagament = (props) => {
   const { onShow: showDrawer } = useContext(DrawerContext);
   const { onShow: showModal } = useContext(ModalContext);
   const [linkedTableData, setLinkedTableData] = useState([]);
@@ -132,7 +132,11 @@ const SupplierManagament = () => {
   };
 
   return (
-    <DashboardLayout title="Supplier Management" topbarAction={topbarAction}>
+    <DashboardLayout
+      title="Supplier Management"
+      topbarAction={topbarAction}
+      signOutHandler={props.signOutHandler}
+    >
       <S.TableOptions>
         <Search />
 

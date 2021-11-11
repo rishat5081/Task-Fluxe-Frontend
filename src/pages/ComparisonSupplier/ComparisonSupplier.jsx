@@ -34,6 +34,7 @@ const ComparisonSupplier = ({
   location: {
     state: { productInfo },
   },
+  signOutHandler,
 }) => {
   const { onShow: showModal } = useContext(DrawerContext);
   const [tableData, setTableData] = useState([]);
@@ -189,7 +190,10 @@ const ComparisonSupplier = ({
       {loadingStatus === true ? (
         <Spinner />
       ) : (
-        <DashboardLayout title={`Supplier Comparison for ${compTitle}`}>
+        <DashboardLayout
+          title={`Supplier Comparison for ${compTitle}`}
+          signOutHandler={signOutHandler}
+        >
           <S.ComparisonSupplier>
             <S.ComparisonDetail>
               <S.Title>Product Name</S.Title>

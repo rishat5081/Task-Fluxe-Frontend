@@ -38,4 +38,6 @@ export { default as Toast } from "./Toast/toast";
 export { default as Spinner } from "./Spinner/Spinner";
 export { default as EditableText } from "./EditableText/EditableText";
 export { default as NavigationBar } from "./NavigationBar/NavigationBar.jsx";
+// export { default as PublicRoute } from "./Public Route/PublicRoute";
+// export { default as PrivateRoute } from "./Private Route/PrivateRoute";
 export * as Forms from "./Forms";

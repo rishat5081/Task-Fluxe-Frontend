@@ -5,7 +5,7 @@ import { Tab, Product, EditableText } from "components";
 import { ModalContext } from "store/modalContext";
 import * as S from "./styles";
 
-const ManagementProduct = () => {
+const ManagementProduct = (props) => {
   const { onShow } = useContext(ModalContext);
 
   const topbarAction = {
@@ -19,13 +19,20 @@ const ManagementProduct = () => {
   };
 
   const content = [
-    { anchor: "Product Specifications", component: <Product.ProductSpecification /> },
+    {
+      anchor: "Product Specifications",
+      component: <Product.ProductSpecification />,
+    },
     { anchor: "Supplier", component: <Product.Supplier /> },
     { anchor: "Files", component: <Product.Files /> },
   ];
 
   return (
-    <DashboardLayout title="Product | Fidget Spinner" topbarAction={topbarAction}>
+    <DashboardLayout
+      title="Product | Fidget Spinner"
+      topbarAction={topbarAction}
+      signOutHandler={props.signOutHandler}
+    >
       <S.Wrapper>
         <Tab content={content} />
       </S.Wrapper>
@@ -46,28 +53,46 @@ const ManagementProduct = () => {
           <S.QualityWrapper>
             <S.Quality>
               <S.QualityTitle>Length:</S.QualityTitle>
-              <EditableText placeholder="Add information.." initialValue="3,2 inch" />
+              <EditableText
+                placeholder="Add information.."
+                initialValue="3,2 inch"
+              />
             </S.Quality>
             <S.Quality>
               <S.QualityTitle>Width:</S.QualityTitle>
-              <EditableText placeholder="Add information.." initialValue="6,7 inch" />
+              <EditableText
+                placeholder="Add information.."
+                initialValue="6,7 inch"
+              />
             </S.Quality>
             <S.Quality>
               <S.QualityTitle>Height:</S.QualityTitle>
-              <EditableText placeholder="Add information.." initialValue="7,1 inch" />
+              <EditableText
+                placeholder="Add information.."
+                initialValue="7,1 inch"
+              />
             </S.Quality>
           </S.QualityWrapper>
           <S.Quality>
             <S.QualityTitle>Color:</S.QualityTitle>
-            <EditableText placeholder="Add information.." initialValue="Midnight Black" />
+            <EditableText
+              placeholder="Add information.."
+              initialValue="Midnight Black"
+            />
           </S.Quality>
           <S.Quality>
             <S.QualityTitle>Materials:</S.QualityTitle>
-            <EditableText placeholder="Add information.." initialValue="PVC, Plastic, Rubber" />
+            <EditableText
+              placeholder="Add information.."
+              initialValue="PVC, Plastic, Rubber"
+            />
           </S.Quality>
           <S.Quality>
             <S.QualityTitle>Additional Info:</S.QualityTitle>
-            <EditableText placeholder="Add information.." initialValue="PVC, Plastic, Rubber" />
+            <EditableText
+              placeholder="Add information.."
+              initialValue="PVC, Plastic, Rubber"
+            />
           </S.Quality>
           <S.Quality>
             <S.QualityTitle>Additional Info:</S.QualityTitle>

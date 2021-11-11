@@ -6,7 +6,7 @@ import { useFormWithYup } from "hooks";
 import { Fragment } from "react";
 import { Controller } from "react-hook-form";
 import { schema, fields_1 } from "./validations";
-const SignUp = () => {
+const SignUp = (props) => {
   const { register, handleSubmit, errors, control } = useFormWithYup(schema);
 
   const onSubmit = async (data) => {
@@ -71,7 +71,10 @@ const SignUp = () => {
           </form>
         </div>
       </div>
-      <NavigationBar />
+      <NavigationBar
+        status={props.status}
+        signOutHandler={props.signOutHandler}
+      />
     </>
   );
 };

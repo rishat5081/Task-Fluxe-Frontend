@@ -7,7 +7,7 @@ import { ModalContext } from "store/modalContext";
 import { table } from "constants/pages/productsManagement";
 import * as S from "./styles";
 
-const ProductsManagement = () => {
+const ProductsManagement = (props) => {
   const { push } = useHistory();
   const { onShow } = useContext(ModalContext);
 
@@ -34,7 +34,11 @@ const ProductsManagement = () => {
   });
 
   return (
-    <DashboardLayout topbarAction={topbarAction} title="Products Management">
+    <DashboardLayout
+      topbarAction={topbarAction}
+      title="Products Management"
+      signOutHandler={props.signOutHandler}
+    >
       <Table payload={{ data: tableData, columns: table.columns }} />
       <S.ProductsManagement>
         <TableLink onClick={() => push("/products-management/product/1")}>

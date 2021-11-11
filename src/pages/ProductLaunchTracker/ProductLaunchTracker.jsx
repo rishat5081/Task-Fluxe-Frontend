@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { getProductLaunchListAPI } from "APIs/Product Launch/productLaunch";
 
-const ProductLaunchTracker = () => {
+const ProductLaunchTracker = (props) => {
   const { push } = useHistory();
   const [dbTableData, setDbTableData] = useState([]);
   const { onShow: showModal } = useContext(ModalContext);
@@ -118,7 +118,11 @@ const ProductLaunchTracker = () => {
   // }));
 
   return (
-    <DashboardLayout topbarAction={topbarAction} title="Product Launch Tracker">
+    <DashboardLayout
+      topbarAction={topbarAction}
+      title="Product Launch Tracker"
+      signOutHandler={props.signOutHandler}
+    >
       {/* <Table payload={{ data: tableData, columns: table.columns }} /> */}
       {loadingStatus === true ? (
         <Spinner />

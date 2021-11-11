@@ -1,6 +1,7 @@
 export const baseURL = "http://localhost:8521";
 // ------------------------------------  Start of Supplier Management Page ------------------------------------------------
 export const signUp = "/controller/signUp";
+export const login = "/controller/login";
 // ------------------------------------  Start of Supplier Management Page ------------------------------------------------
 
 /**

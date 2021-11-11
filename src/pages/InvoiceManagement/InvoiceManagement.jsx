@@ -10,7 +10,7 @@ import * as S from "./styles";
 import { getAllDashboardInvoices } from "APIs/Invoice/invoice";
 import { callErrorToast, callSuccessToast } from "components/Toast/toast";
 
-const InvoiceManagement = () => {
+const InvoiceManagement = (props) => {
   // This state will be fetch from API, for now it's constant from file.
   const [tableData, setTableData] = useState(table.data);
   const [transformedTableData, setTransformedTableData] = useState([]);
@@ -128,7 +128,11 @@ const InvoiceManagement = () => {
   };
 
   return (
-    <DashboardLayout title="Invoice Management" topbarAction={topbarAction}>
+    <DashboardLayout
+      title="Invoice Management"
+      topbarAction={topbarAction}
+      signOutHandler={props.signOutHandler}
+    >
       {loadingStatus === true ? (
         <Spinner />
       ) : invoiceFromDatabase === false ? (

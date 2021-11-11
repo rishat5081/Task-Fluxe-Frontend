@@ -31,6 +31,18 @@ export const UserField = styled.div`
   }
 `;
 
+export const SignOut = styled.div`
+  display: flex;
+
+  color: #a6a6a6;
+
+  padding-right: 25px;
+
+  svg + svg {
+    margin-left: 25px;
+  }
+`;
+
 export const UserProfile = styled.div`
   display: flex;
   align-items: center;

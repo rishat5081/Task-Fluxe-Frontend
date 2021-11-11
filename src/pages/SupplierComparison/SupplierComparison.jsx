@@ -8,7 +8,7 @@ import { ModalContext } from "store/modalContext";
 import { useState } from "react";
 import { getAllSupplierComparison } from "APIs/Supplier Comparison/supplierComparison";
 
-const SupplierComparison = () => {
+const SupplierComparison = (props) => {
   const { push } = useHistory();
   const { onShow: showModal } = useContext(ModalContext);
   const [dbTableData, setDbTableData] = useState(table.data);
@@ -90,7 +90,11 @@ const SupplierComparison = () => {
     setLoadingStatus(false);
   };
   return (
-    <DashboardLayout title="Supplier Comparison" topbarAction={topbarAction}>
+    <DashboardLayout
+      title="Supplier Comparison"
+      topbarAction={topbarAction}
+      signOutHandler={props.signOutHandler}
+    >
       {loadingStatus === true ? (
         <Spinner />
       ) : (

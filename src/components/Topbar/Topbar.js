@@ -1,7 +1,7 @@
 import { Icon, Userbar } from "components";
 import * as S from "./styles";
 
-const Topbar = ({ title, topbarAction }) => {
+const Topbar = ({ title, topbarAction, signOutHandler }) => {
   return (
     <S.Topbar>
       <S.TitleWrapper topbarAction={topbarAction}>
@@ -13,7 +13,7 @@ const Topbar = ({ title, topbarAction }) => {
           </S.Action>
         )}
       </S.TitleWrapper>
-      <Userbar />
+      <Userbar signOutHandler={signOutHandler} />
     </S.Topbar>
   );
 };

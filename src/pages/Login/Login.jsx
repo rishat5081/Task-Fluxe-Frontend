@@ -4,12 +4,11 @@ import { Fragment } from "react";
 import { Controller } from "react-hook-form";
 import { schema, fields_1 } from "./validations";
 
-const Login = () => {
+const Login = (props) => {
   const { register, handleSubmit, errors, control } = useFormWithYup(schema);
 
-  const onSubmit = (data) => {
-    console.log("Login ::: ", data);
-  };
+  const onSubmit = (data) => props.handleLogin(data.email, data.password);
+
   return (
     <>
       <div className="outer">
@@ -54,7 +53,11 @@ const Login = () => {
           </form>
         </div>
       </div>
-      <NavigationBar />
+
+      <NavigationBar
+        status={props.status}
+        signOutHandler={props.signOutHandler}
+      />
     </>
   );
 };
