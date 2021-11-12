@@ -27,7 +27,7 @@ import { uploadCompanyImage } from "APIs/apis";
  * This component will be only use in Drawer as a content
  * @param {string} supplierId Id to fetch supplier data
  */
-const Supplier = ({ companyInfo, supplierId }) => {
+const Supplier = ({ id, companyInfo, supplierId }) => {
   const { register, handleSubmit, errors, control } = useFormWithYup(schema);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -43,9 +43,8 @@ const Supplier = ({ companyInfo, supplierId }) => {
 
   //on form submission for the supplier and company information
   const onSubmit = async (data) => {
-    console.log(data);
     //setting the data to the API and updating the record in the database
-    await updateSupplierCompanyInfo(companyUUID, supplierUUID, data)
+    await updateSupplierCompanyInfo(companyUUID, supplierUUID, data, id)
       .then((response) => {
         if (response) {
           callSuccessToast("Successfully Updated");
@@ -60,7 +59,7 @@ const Supplier = ({ companyInfo, supplierId }) => {
 
   //getting the API response
   const gettingCompanyDetails = async () => {
-    await getSupplierCompanyDetails(companyInfo, supplierId)
+    await getSupplierCompanyDetails(companyInfo, supplierId, id)
       .then((response) => response.companies)
       .then((companies) => {
         // console.log(companies);
@@ -133,6 +132,7 @@ const Supplier = ({ companyInfo, supplierId }) => {
       formData.append("Image", file);
       formData.append("supplierUUID", supplierUUID);
       formData.append("companyUUID", companyUUID);
+      formData.append("id", id);
 
       await uploadCompanyImage(formData)
         .then((response) => {
@@ -156,7 +156,7 @@ const Supplier = ({ companyInfo, supplierId }) => {
   };
 
   const updateProductBTN = async () => {
-    await addProducttoSupplier(supplierUUID, selectedProducts)
+    await addProducttoSupplier(supplierUUID, selectedProducts, id)
       .then((res) => {
         if (res === "Successfully Added") {
           callSuccessToast(res);
@@ -181,7 +181,7 @@ const Supplier = ({ companyInfo, supplierId }) => {
 
   //submitting the note to the server through the API
   const updateNotesBTN = async () => {
-    await addNotestoSupplier(supplierUUID, companyNotes)
+    await addNotestoSupplier(supplierUUID, companyNotes, id)
       .then((response) => {
         if (response) {
           console.log(response);
@@ -216,6 +216,7 @@ const Supplier = ({ companyInfo, supplierId }) => {
       formData.append("Attachment", file);
       formData.append("supplierUUID", supplierUUID);
       formData.append("companyUUID", companyUUID);
+      formData.append("id", id);
 
       await addFilestoSupplier(formData)
         .then((response) => {

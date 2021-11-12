@@ -12,6 +12,7 @@ const SupplierComparison = (props) => {
   const { push } = useHistory();
   const { onShow: showModal } = useContext(ModalContext);
   const [dbTableData, setDbTableData] = useState(table.data);
+  const [noRecordFound, setNoRecordFound] = useState(false);
   const [isTableTransformed, setIsTableTransformed] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState(true);
 
@@ -54,7 +55,7 @@ const SupplierComparison = (props) => {
   };
 
   useEffect(() => {
-    getAllSupplierComparison()
+    getAllSupplierComparison(props.id)
       .then((result) => {
         linkedTableData(result.comparisonList);
       })
@@ -85,9 +86,13 @@ const SupplierComparison = (props) => {
           ),
       };
     });
-
-    setDbTableData(linkedData);
-    setLoadingStatus(false);
+    if (linkedData.length === 0) {
+      setLoadingStatus(false);
+      setNoRecordFound(true);
+    } else {
+      setDbTableData(linkedData);
+      setLoadingStatus(false);
+    }
   };
   return (
     <DashboardLayout
@@ -97,6 +102,8 @@ const SupplierComparison = (props) => {
     >
       {loadingStatus === true ? (
         <Spinner />
+      ) : noRecordFound === true ? (
+        <div className="text-center text-danger mt-5">No Record Found</div>
       ) : (
         <Table payload={{ data: dbTableData, columns: table.columns }} />
       )}

@@ -36,7 +36,7 @@ const CreateNewSupplier = ({ createSupplier }) => {
     ) {
       //displaying the toast to end the correct info
     } else {
-      await addSupplierAPi(selectedCompanyUUID, email, supplierName)
+      await addSupplierAPi(selectedCompanyUUID, email, supplierName, id)
         .then((response) => {
           if (response.status === "Email Already Exists") {
             callErrorToast("Supplier Already Exists");

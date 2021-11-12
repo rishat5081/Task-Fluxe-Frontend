@@ -61,14 +61,16 @@ const SupplierManagament = (props) => {
     onClick: () => {
       showModal({
         title: "Create New Supplier",
-        content: <Forms.CreateNewSupplier createSupplier={addSupplier} />,
+        content: (
+          <Forms.CreateNewSupplier createSupplier={addSupplier} id={props.id} />
+        ),
       });
     },
   };
 
   const getDataFromAPI = async () => {
     try {
-      await getSupplierManagementDashBoard_API()
+      await getSupplierManagementDashBoard_API(props.id)
         .then((response) => {
           if (response) {
             //calling linked table function to make the link in the
@@ -104,6 +106,7 @@ const SupplierManagament = (props) => {
               showDrawer({
                 content: (
                   <Supplier
+                    id={props.id}
                     supplierId={supplier.supplierUUID}
                     companyInfo={apiRawData.companyUUID}
                   />
@@ -147,7 +150,9 @@ const SupplierManagament = (props) => {
       ) : linkedTableData.length > 0 ? (
         <Table payload={{ data: linkedTableData, columns: table.columns }} />
       ) : (
-        "No Record Found"
+        <div className="text-center text-danger font-bold mt-5">
+          No Record Found
+        </div>
       )}
     </DashboardLayout>
   );

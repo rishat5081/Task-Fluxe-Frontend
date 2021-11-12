@@ -33,7 +33,9 @@ const InvoiceManagement = (props) => {
             <TableLink
               onClick={() =>
                 showDrawer({
-                  content: <Invoice invoiceUUID={data.invoiceUUID} />,
+                  content: (
+                    <Invoice invoiceUUID={data.invoiceUUID} id={props.id} />
+                  ),
                 })
               }
             >
@@ -90,16 +92,16 @@ const InvoiceManagement = (props) => {
    */
 
   const getAllInvoiceAPI = () => {
-    getAllDashboardInvoices()
+    getAllDashboardInvoices(props.id)
       .then((response) => {
         if (response.invoiceInfo.length > 0) {
           transformTableData(response.invoiceInfo);
           setLoadingStatus(false);
           setInvoiceFromDatabase(true);
         } else {
-          setLoadingStatus(true);
+          setLoadingStatus(false);
           setInvoiceFromDatabase(false);
-          callErrorToast("No Record Found. Please Add Invoice");
+          // callErrorToast("No Record Found. Please Add Invoice");
         }
       })
       .catch((err) => {
@@ -121,7 +123,9 @@ const InvoiceManagement = (props) => {
     name: "New Invoice",
     onClick: () => {
       showModal({
-        content: <Forms.CreateNewInvoice onAddInvoice={addInvoice} />,
+        content: (
+          <Forms.CreateNewInvoice onAddInvoice={addInvoice} userID={props.id} />
+        ),
         title: "Create New Invoice",
       });
     },

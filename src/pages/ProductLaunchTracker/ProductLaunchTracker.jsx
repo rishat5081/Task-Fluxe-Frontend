@@ -18,8 +18,6 @@ const ProductLaunchTracker = (props) => {
   const [loadingStatus, setLoadingStatus] = useState(true);
   //adding a new record
   const addProduct = (newProduct, status) => {
-    console.log("newProduct ::", newProduct);
-    console.log("status ::", status);
     const newProductInfo = {
       productLaunchTitle: (
         <TableLink
@@ -62,10 +60,9 @@ const ProductLaunchTracker = (props) => {
   };
 
   useEffect(() => {
-    getProductLaunchListAPI()
+    getProductLaunchListAPI(props.id)
       .then((result) => result.productList)
       .then((productLaunchList) => {
-        if (productLaunchList.length > 0) console.log(productLaunchList);
         linkedTableData(productLaunchList);
       })
       .catch((err) => {});

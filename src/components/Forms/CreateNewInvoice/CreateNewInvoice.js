@@ -11,7 +11,7 @@ import { callErrorToast, callSuccessToast } from "components/Toast/toast";
 
 import axios from "axios";
 
-const CreateNewInvoice = ({ onAddInvoice }) => {
+const CreateNewInvoice = ({ onAddInvoice, userID }) => {
   /**
    *
    *   //start of states
@@ -19,6 +19,7 @@ const CreateNewInvoice = ({ onAddInvoice }) => {
   const { register, handleSubmit, errors, control } = useFormWithYup(schema);
   const { onHide } = useContext(ModalContext);
   const [fields, setFields] = useState();
+  const [nullFields, setNullFields] = useState(true);
   const [dbResponse, setDbResponse] = useState();
   const [selectedSupplier, setSelectedSupplier] = useState();
   const [selectedProduct, setSelectedProduct] = useState();
@@ -32,34 +33,41 @@ const CreateNewInvoice = ({ onAddInvoice }) => {
    * start of API for getting the name of product, supplier and status
    */
   const gettingAllSuppliers = async () => {
-    await getAllSupplier_Name()
+    await getAllSupplier_Name(userID)
       .then((response) => {
+        //console.log(response);
         if (response) {
-          const supplierNames = response.supplierInfo.map((supplier) => ({
-            label: supplier.supplierName,
-            value: supplier.supplierUUID,
-          }));
+          if (response.supplierInfo.length > 0) {
+            const supplierNames = response.supplierInfo.map((supplier) => ({
+              label: supplier.supplierName,
+              value: supplier.supplierUUID,
+            }));
 
-          const InvoiceStatus = response.InvoiceStatus.map((invoiceStatus) => ({
-            // console.log(invoiceStatus);
-            label: invoiceStatus.invoiceStatusTitle,
-            // color: invoiceStatus.invoiceStatusColor,
-            value: invoiceStatus.invoiceStatusUUID,
-          }));
+            const InvoiceStatus = response.InvoiceStatus.map(
+              (invoiceStatus) => ({
+                // //console.log(invoiceStatus);
+                label: invoiceStatus.invoiceStatusTitle,
+                // color: invoiceStatus.invoiceStatusColor,
+                value: invoiceStatus.invoiceStatusUUID,
+              })
+            );
 
-          createInvoiceFields[0].items = supplierNames;
-          createInvoiceFields[6].items = InvoiceStatus;
-          setFields(createInvoiceFields);
-          setDbResponse(response.supplierInfo);
-
-          setLoadingStatus(false);
-
-          // callSuccessToast(response);
+            createInvoiceFields[0].items = supplierNames;
+            createInvoiceFields[6].items = InvoiceStatus;
+            setFields(createInvoiceFields);
+            setDbResponse(response.supplierInfo);
+            setLoadingStatus(true);
+            setNullFields(false);
+          } else {
+            setLoadingStatus(true);
+            setNullFields(true);
+            callErrorToast("You Dont have Any Supplier Please Add Supplier");
+          }
         }
       })
       .catch((error) => {
         if (error) {
-          console.log(error);
+          //console.log(error);
           callErrorToast(error);
         }
       });
@@ -69,7 +77,7 @@ const CreateNewInvoice = ({ onAddInvoice }) => {
    * end of API
    */
   const onSubmit = (data, event) => {
-    console.log();
+    //console.log();
     event.preventDefault();
     const {
       supplierName,
@@ -91,6 +99,7 @@ const CreateNewInvoice = ({ onAddInvoice }) => {
     formData.append("invoicePaid", paidAmount);
     formData.append("invoiceStatus", selectedInvoiceStatus);
     formData.append("productUUID", selectedProduct);
+    formData.append("id", userID);
     createAnInvoice(formData)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
@@ -169,8 +178,12 @@ const CreateNewInvoice = ({ onAddInvoice }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {loadingStatus === true ? (
+      {loadingStatus === false ? (
         <Spinner />
+      ) : nullFields === true ? (
+        <div className="text-center text-danger mt-5 mb-5 font-bold">
+          No Supplier Found
+        </div>
       ) : (
         fields.map(({ name, label, onSelect, value, type, ...rest }, index) => (
           <Fragment key={index}>
@@ -215,13 +228,7 @@ const CreateNewInvoice = ({ onAddInvoice }) => {
           </Fragment>
         ))
       )}
-      {/* <div style={{ width: "fit-content" }}>
-        <Input
-          onChange={fileChangedHandler}
-          type="file"
-          placeholder="Upload a New Picture"
-        />
-      </div> */}
+
       <SubmitButton>Create</SubmitButton>
     </form>
   );

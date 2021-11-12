@@ -14,7 +14,6 @@ import {
 import { comparisonDetails, table } from "constants/pages/comparisonSupplier";
 import * as S from "./styles";
 import { useEffect } from "react";
-import { Redirect, useHistory, useParams } from "react-router";
 import { useState } from "react";
 import {
   getSupplierComparisonDetails,
@@ -35,6 +34,7 @@ const ComparisonSupplier = ({
     state: { productInfo },
   },
   signOutHandler,
+  id,
 }) => {
   const { onShow: showModal } = useContext(DrawerContext);
   const [tableData, setTableData] = useState([]);
@@ -46,10 +46,6 @@ const ComparisonSupplier = ({
   const [comparisonStatus, setComparisonStatus] = useState();
   const [comparisonUUID, setComparisonUUID] = useState();
 
-  let { id } = useParams();
-
-  const history = useHistory();
-  // console.log(id);
   const colors = {
     yes: "#01BF80",
     maybe: "#F9B515",
@@ -181,6 +177,7 @@ const ComparisonSupplier = ({
         <Forms.AddSupplierComparison
           onAddSupplier={addComparisonProduct}
           comparisonUUID={productInfo.comparisonUUID}
+          userID={id}
         />
       ),
     });

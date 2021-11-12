@@ -25,7 +25,7 @@ import {
  * This component will be only use in Drawer as a content
  * @param {string} invoiceUUID Id to fetch supplier data
  */
-const Supplier = ({ invoiceUUID }) => {
+const Invoice = ({ invoiceUUID, id }) => {
   const { register, handleSubmit, errors, control } = useFormWithYup(schema);
   const [loading, setLoading] = useState(true);
   const [invoiceSupplier, setInvoiceSupplier] = useState(false);
@@ -317,7 +317,7 @@ const Supplier = ({ invoiceUUID }) => {
                   onBlur={onAddTextArea}
                 ></TextArea>
               </S.Notes>
-              <SubmitButton>Create</SubmitButton>
+              <SubmitButton>Update</SubmitButton>
             </form>
 
             <S.Title>{"Invoice Attachment"}</S.Title>
@@ -353,4 +353,4 @@ const Supplier = ({ invoiceUUID }) => {
   );
 };
 
-export default Supplier;
+export default Invoice;

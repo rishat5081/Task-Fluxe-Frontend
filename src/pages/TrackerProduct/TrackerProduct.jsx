@@ -26,6 +26,7 @@ const TrackerProduct = ({
   location: {
     state: { productInfo },
   },
+  id,
 }) => {
   const { onShow: showModal } = useContext(ModalContext);
   const [loadingStatus, setloadingStatus] = useState(true);
@@ -101,7 +102,9 @@ const TrackerProduct = ({
     //passing values to keep track of which task list is it
     showModal({
       title: "Create New Task",
-      content: <Forms.AddTask createNewTask={addNewTask} values={values} />,
+      content: (
+        <Forms.AddTask createNewTask={addNewTask} values={values} userID={id} />
+      ),
     });
   };
 
@@ -113,6 +116,7 @@ const TrackerProduct = ({
         <Forms.AddTaskList
           createNewTaskList={createTaskList}
           productInfo={productInfo}
+          userID={id}
         />
       ),
     });

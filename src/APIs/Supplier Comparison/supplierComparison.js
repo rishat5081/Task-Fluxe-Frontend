@@ -22,10 +22,10 @@ export const addNewSupplierComparison = async (productName) => {
 };
 
 //adding a new product for the supplier  comparison
-export const getAllSupplierComparison = async () => {
+export const getAllSupplierComparison = async (id) => {
   return new Promise((resolve, reject) => {
     axios
-      .get(baseURL + getAllSupplierComp)
+      .get(baseURL + getAllSupplierComp, { params: { id } })
       .then((response) => resolve(response.data))
       .catch(reject);
   });
@@ -89,7 +89,8 @@ export const addNewSupplierforComp = async (
   packagingOption,
   leadTime,
   sampleInformation,
-  comments
+  comments,
+  userID
 ) => {
   return new Promise((resolve, reject) => {
     axios
@@ -109,6 +110,7 @@ export const addNewSupplierforComp = async (
         leadTime,
         sampleInformation,
         comments,
+        userID,
       })
       .then((response) => resolve(response.data))
       .catch(reject);

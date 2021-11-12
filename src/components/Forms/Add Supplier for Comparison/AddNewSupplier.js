@@ -28,14 +28,13 @@ import { useEffect } from "react";
 import { callSuccessToast } from "components/Toast/toast";
 import { callErrorToast } from "components/Toast/toast";
 
-const CreateNewNote = ({ onAddSupplier, comparisonUUID }) => {
+const CreateNewNote = ({ onAddSupplier, comparisonUUID, userID }) => {
   const { register, handleSubmit, errors, control } = useFormWithYup(schema);
   const [loadingStatus, setLoadingStatus] = useState(true);
   const [selectedRating, setSelectedRating] = useState();
   const { onHide } = useContext(DrawerContext);
 
   const onSubmit = (data, event) => {
-    console.log(data);
     event.preventDefault();
     addNewSupplierforComp(
       comparisonUUID,
@@ -52,7 +51,8 @@ const CreateNewNote = ({ onAddSupplier, comparisonUUID }) => {
       data.packagingOption,
       data.leadTime,
       data.sampleInformation,
-      data.comments
+      data.comments,
+      userID
     )
       .then((result) => {
         if (result) {

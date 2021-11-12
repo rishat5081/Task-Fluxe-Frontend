@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 
 import { createNewTaskListAPI } from "APIs/Product Launch/productLaunch";
 
-const AddTaskList = ({ createNewTaskList, productInfo }) => {
+const AddTaskList = ({ createNewTaskList, productInfo, userID }) => {
   const { register, handleSubmit, errors, control } = useFormWithYup(schema);
   const { onHide } = useContext(ModalContext);
   const [fieldsLoading, setFieldsLoading] = useState(true);
@@ -19,7 +19,8 @@ const AddTaskList = ({ createNewTaskList, productInfo }) => {
   const onSubmit = async (data) => {
     await createNewTaskListAPI(
       data.taskListTitle,
-      productInfo.productLaunchUUID
+      productInfo.productLaunchUUID,
+      userID
     )
       .then((response) => {
         if (response) {

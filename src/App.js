@@ -178,7 +178,11 @@ const App = () => {
         <Route
           render={(props) =>
             loggedIn === true ? (
-              <Page.TrackerProduct {...props} signOutHandler={signOutCall} />
+              <Page.TrackerProduct
+                {...props}
+                signOutHandler={signOutCall}
+                id={loggedInID}
+              />
             ) : (
               <Page.Home {...props} />
             )
@@ -260,7 +264,11 @@ const App = () => {
         <Route
           render={(props) =>
             loggedIn === true ? (
-              <Page.InvoiceManagement {...props} signOutHandler={signOutCall} />
+              <Page.InvoiceManagement
+                {...props}
+                signOutHandler={signOutCall}
+                id={loggedInID}
+              />
             ) : (
               <Page.Home {...props} />
             )

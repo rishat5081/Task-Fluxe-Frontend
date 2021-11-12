@@ -11,19 +11,27 @@ import axios from "axios";
 import { callSuccessToast } from "components/Toast/toast";
 
 // ------------------------------------  Start of Invoice Management Page ------------------------------------------------
-export const getAllSupplier_Name = async () => {
+export const getAllSupplier_Name = async (userID) => {
   return new Promise((resolve, reject) => {
     axios
-      .get(baseURL + getAllSupplierNames)
+      .get(baseURL + getAllSupplierNames, {
+        params: {
+          userID,
+        },
+      })
       .then((response) => resolve(response.data))
       .catch(reject);
   });
 };
 
-export const getAllDashboardInvoices = async () => {
+export const getAllDashboardInvoices = async (id) => {
   return new Promise((resolve, reject) => {
     axios
-      .get(baseURL + getAllInvoices)
+      .get(baseURL + getAllInvoices, {
+        params: {
+          id,
+        },
+      })
       .then((response) => resolve(response.data))
       .catch(reject);
   });

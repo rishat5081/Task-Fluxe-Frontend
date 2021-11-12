@@ -12,7 +12,7 @@ import {
   getProductStatus_Priorities,
 } from "APIs/Product Launch/productLaunch";
 
-const CreateNewSupplier = ({ createNewTask, values }) => {
+const CreateNewSupplier = ({ createNewTask, values, userID }) => {
   const { register, handleSubmit, errors, control } = useFormWithYup(schema);
   const { onHide } = useContext(ModalContext);
   const [fields, setFields] = useState(null);
@@ -40,7 +40,8 @@ const CreateNewSupplier = ({ createNewTask, values }) => {
       data.taskAssignedTo,
       statusObject.productLaunchDetailsStatusUUID,
       priorityObject.productLaunchDetailsPriorityUUID,
-      data.comments
+      data.comments,
+      userID
     )
       .then((result) => {
         if (result) {

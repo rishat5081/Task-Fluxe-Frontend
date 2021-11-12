@@ -18,10 +18,14 @@ export const getCompanyNames = async () => {
   });
 };
 
-export const getSupplierManagementDashBoard_API = async () => {
+export const getSupplierManagementDashBoard_API = async (id) => {
   return new Promise((resolve, reject) => {
     axios
-      .get(baseURL + getSupplierManagementDashboard)
+      .get(baseURL + getSupplierManagementDashboard, {
+        params: {
+          id,
+        },
+      })
       .then((response) => resolve(response.data))
       .catch(reject);
   });

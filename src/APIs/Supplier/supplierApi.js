@@ -16,7 +16,8 @@ import { callSuccessToast } from "components/Toast/toast";
 export const addSupplierAPi = async (
   companyUUID,
   supplierEmail,
-  supplierName
+  supplierName,
+  id
 ) => {
   return new Promise((resolve, reject) => {
     axios
@@ -24,6 +25,7 @@ export const addSupplierAPi = async (
         companyUUID,
         supplierEmail,
         supplierName,
+        id,
       })
       .then((response) => resolve(response.data))
       .catch(reject);
@@ -31,13 +33,18 @@ export const addSupplierAPi = async (
 };
 
 //getting the company and supplier information for Drawer
-export const getSupplierCompanyDetails = async (companyUUID, supplierUUID) => {
+export const getSupplierCompanyDetails = async (
+  companyUUID,
+  supplierUUID,
+  id
+) => {
   return new Promise((resolve, reject) => {
     axios
       .get(baseURL + getCompany_SupplierInformation, {
         params: {
           companyUUID,
           supplierUUID,
+          id,
         },
       })
       .then((response) => resolve(response.data))
@@ -49,7 +56,8 @@ export const getSupplierCompanyDetails = async (companyUUID, supplierUUID) => {
 export const updateSupplierCompanyInfo = async (
   companyUUID,
   supplierUUID,
-  formData
+  formData,
+  id
 ) => {
   return new Promise((resolve, reject) => {
     axios
@@ -63,6 +71,7 @@ export const updateSupplierCompanyInfo = async (
         supplierName: formData.supplierName,
         supplierPhone: formData.supplierPhone,
         supplierPosition: formData.supplierPosition,
+        id,
       })
       .then((response) => resolve(response.data))
       .catch(reject);
@@ -70,12 +79,13 @@ export const updateSupplierCompanyInfo = async (
 };
 
 //adding the product to supplier
-export const addProducttoSupplier = async (supplierUUID, productList) => {
+export const addProducttoSupplier = async (supplierUUID, productList, id) => {
   return new Promise((resolve, reject) => {
     axios
       .put(baseURL + addProduct_toSupplier, {
         supplierUUID,
         productList,
+        id,
       })
       .then((response) => resolve(response.data))
       .catch(reject);
@@ -83,12 +93,13 @@ export const addProducttoSupplier = async (supplierUUID, productList) => {
 };
 
 //adding the notes to supplier
-export const addNotestoSupplier = async (supplierUUID, note) => {
+export const addNotestoSupplier = async (supplierUUID, note, id) => {
   return new Promise((resolve, reject) => {
     axios
       .put(baseURL + addNote_toSupplier, {
         supplierUUID,
         note,
+        id,
       })
       .then((response) => resolve(response.data))
       .catch(reject);

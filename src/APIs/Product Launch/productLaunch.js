@@ -16,10 +16,10 @@ import { callSuccessToast } from "components/Toast/toast";
 // ------------------------------------  Start of Product Launch Management Page ------------------------------------------------
 //getting all the product launch list from the server end
 //to display on the main table
-export const getProductLaunchListAPI = async () => {
+export const getProductLaunchListAPI = async (id) => {
   return new Promise((resolve, reject) => {
     axios
-      .get(baseURL + getProductLaunchList)
+      .get(baseURL + getProductLaunchList, { params: { id } })
       .then((response) => resolve(response.data))
       .catch(reject);
   });
@@ -93,12 +93,17 @@ export const getProductTrackingDetails = async (productLaunchUUID) => {
 
 //creating new task list
 //POST
-export const createNewTaskListAPI = async (listName, productLaunchUUID) => {
+export const createNewTaskListAPI = async (
+  listName,
+  productLaunchUUID,
+  userID
+) => {
   return new Promise((resolve, reject) => {
     axios
       .post(baseURL + createTaskList, {
         listName,
         productLaunchUUID,
+        userID,
       })
       .then((response) => resolve(response.data))
       .catch(reject);
@@ -123,7 +128,8 @@ export const createNewTaskAPI = async (
   assignedTo,
   status,
   priority,
-  comments
+  comments,
+  userID
 ) => {
   return new Promise((resolve, reject) => {
     axios
@@ -135,6 +141,7 @@ export const createNewTaskAPI = async (
         status,
         priority,
         comments,
+        userID,
       })
       .then((response) => resolve(response.data))
       .catch(reject);
