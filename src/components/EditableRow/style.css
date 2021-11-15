@@ -1,0 +1,28 @@
+input {
+  margin: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #a5a5a5;
+}
+select {
+  margin: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #a5a5a5;
+}
+
+select > option {
+  margin: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #a5a5a5;
+}
+textarea {
+  text-align: justify;
+  margin: 10px;
+  min-height: 90px;
+  width: 120%;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #a5a5a5;
+}

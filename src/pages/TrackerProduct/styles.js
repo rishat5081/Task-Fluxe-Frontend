@@ -69,6 +69,26 @@ export const FadedButton = styled.button`
   display: flex;
   align-items: center;
 
-  border: 1px solid ${theme.main.colors.primary};
-  margin-bottom: 20px;
+  font-size: ${theme.font.sm.size};
+  font-weight: 700;
+
+  color: #555555;
+  background-color: #fafafa;
+
+  padding: 10px 10px;
+  border-radius: 16px;
 `;
+
+// export const FadedButton = styled(Button)`
+//   display: flex;
+//   align-items: center;
+
+//   font-size: ${theme.font.sm.size};
+//   font-weight: 700;
+
+//   color: #555555;
+//   background-color: #fafafa;
+
+//   padding: 10px 20px;
+//   border-radius: 16px;
+// `;

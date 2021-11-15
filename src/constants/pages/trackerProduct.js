@@ -32,19 +32,21 @@ export const table = [
     productLaunchListsTitle: "Development",
     productLaunchListsUUID: 1211,
     tasklist: [
-      [
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <span style={{ marginRight: "10px", color: "#c4c4c4" }}>
-            <Icon width={22} height={22} name="check-circle-outline" />
-          </span>
-          Complete keyword ads research
-        </div>,
-        "03/01/2021",
-        "John Doe",
-        <Chip type="status" chipStyle="ontrack" color="#01BF80" />,
-        <Chip type="priority" chipStyle="low" color="#01BF80" />,
-        "This seems like a profitable",
-      ],
+      {
+        title: (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ marginRight: "10px", color: "#c4c4c4" }}>
+              <Icon width={22} height={22} name="check-circle-outline" />
+            </span>
+            Complete keyword ads research
+          </div>
+        ),
+        date: "03/01/2021",
+        assigned: "John Doe",
+        status: <Chip type="status" chipStyle="ontrack" color="#01BF80" />,
+        priority: <Chip type="priority" chipStyle="low" color="#01BF80" />,
+        comment: "This seems like a profitable",
+      },
     ],
   },
 ];
@@ -56,4 +58,6 @@ export const taskTableColumns = [
   "Status",
   "Priority",
   "Comments",
+  "",
+  // "Close",
 ];

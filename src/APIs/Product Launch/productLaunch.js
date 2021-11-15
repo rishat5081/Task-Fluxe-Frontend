@@ -4,6 +4,8 @@ import {
   addNewTask,
   baseURL,
   createTaskList,
+  deleteProductLaunchDetails,
+  editProductLaunchDetails,
   getPriorityAndStatus,
   getProductLaunchList,
   getProductNamesList,
@@ -160,6 +162,44 @@ export const updateProductLaunchInformation = async (
         productLaunchTrackerName,
         productLaunchTrackerComment,
         productLaunchUUID,
+      })
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};
+
+//PUT
+export const updateProductLaunchDetailsRow = async (
+  assigned,
+  comments,
+  date,
+  priority,
+  status,
+  title,
+  uuid
+) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(baseURL + editProductLaunchDetails, {
+        assigned,
+        comments,
+        date,
+        priority,
+        status,
+        title,
+        uuid,
+      })
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};
+
+//PUT
+export const deleteProductLaunchDetailsRow = async (uuid) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(baseURL + deleteProductLaunchDetails, {
+        uuid,
       })
       .then((response) => resolve(response.data))
       .catch(reject);

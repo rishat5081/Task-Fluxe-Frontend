@@ -91,3 +91,7 @@ export const updateProductLaunchDetails =
 export const getPriorityAndStatus = "/productLaunch/getPriorityAndStatus";
 export const createTaskList = "/productLaunch/createNewTaskList";
 export const addNewTask = "/productLaunch/addNewTask";
+export const editProductLaunchDetails =
+  "/productLaunch/editProductLaunchDetails";
+export const deleteProductLaunchDetails =
+  "/productLaunch/deleteProductLaunchDetails";

@@ -10,7 +10,12 @@ import { useState, useEffect } from "react";
 
 import { createNewTaskListAPI } from "APIs/Product Launch/productLaunch";
 
-const AddTaskList = ({ createNewTaskList, productInfo, userID }) => {
+const AddTaskList = ({
+  createNewTaskList,
+  productInfo,
+  userID,
+  updateAddedStatus,
+}) => {
   const { register, handleSubmit, errors, control } = useFormWithYup(schema);
   const { onHide } = useContext(ModalContext);
   const [fieldsLoading, setFieldsLoading] = useState(true);
@@ -26,7 +31,7 @@ const AddTaskList = ({ createNewTaskList, productInfo, userID }) => {
         if (response) {
           callSuccessToast("Task List Added Successfully");
           createNewTaskList(response.result);
-          onHide();
+          updateAddedStatus();
           return;
         }
       })

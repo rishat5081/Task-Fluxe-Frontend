@@ -12,7 +12,13 @@ import {
   getProductStatus_Priorities,
 } from "APIs/Product Launch/productLaunch";
 
-const CreateNewSupplier = ({ createNewTask, values, userID }) => {
+const Add_Task_Row = ({
+  createNewTask,
+  values,
+  userID,
+  taskList,
+  updateAddedStatus,
+}) => {
   const { register, handleSubmit, errors, control } = useFormWithYup(schema);
   const { onHide } = useContext(ModalContext);
   const [fields, setFields] = useState(null);
@@ -21,10 +27,12 @@ const CreateNewSupplier = ({ createNewTask, values, userID }) => {
   const [priorityData, setPriorityData] = useState();
   const [status, setStatus] = useState();
   const [priority, setPriority] = useState();
-  const [selectedCompanyUUID, setSelectedCompanyUUID] = useState("");
+  const [selectedTaskList, setSelectedTaskList] = useState(null);
 
   //on form submission
   const onSubmit = async (data) => {
+    // console.log(data);
+    // console.log(new Date(data.taskDate).toDateString());
     const statusObject = statusData.find(
       (statusInfo) => statusInfo.productLaunchDetailsStatusUUID === status
     );
@@ -33,14 +41,10 @@ const CreateNewSupplier = ({ createNewTask, values, userID }) => {
         priorityInfo.productLaunchDetailsPriorityUUID === priority
     );
 
-    const tempDate = data.taskDate.toLocaleString();
-    const tempDate2 = tempDate.split(",");
-    const finalDate = getFormattedDate(tempDate2[0]);
-
     createNewTaskAPI(
-      values.productLaunchListsUUID,
+      selectedTaskList,
       data.taskName,
-      finalDate,
+      new Date(data.taskDate).toDateString(),
       data.taskAssignedTo,
       statusObject.productLaunchDetailsStatusUUID,
       priorityObject.productLaunchDetailsPriorityUUID,
@@ -51,13 +55,13 @@ const CreateNewSupplier = ({ createNewTask, values, userID }) => {
         if (result) {
           createNewTask(
             data,
-            finalDate,
-            values.productLaunchListsUUID,
+            selectedTaskList,
             statusObject,
             priorityObject,
             result.createdTask.productLaunchDetailsUUID
           );
-          onHide();
+          callSuccessToast("Task Added");
+          updateAddedStatus();
         }
       })
       .catch((err) => {
@@ -65,18 +69,16 @@ const CreateNewSupplier = ({ createNewTask, values, userID }) => {
       });
   };
 
-  function getFormattedDate(date) {
-    let tempDate = date.split("/");
-    let year = tempDate[2].split("20");
-    return tempDate[0] + "/" + tempDate[1] + "/" + year[1];
-  }
-
   const selectedStatus = (statusUUID) => {
     setStatus(statusUUID);
   };
 
   const selectedPriority = (priorityUUID) => {
     setPriority(priorityUUID);
+  };
+  const selectTaskList = (taskListUUID) => {
+    console.log(taskListUUID);
+    setSelectedTaskList(taskListUUID);
   };
 
   const getStatusandPriority = async () => {
@@ -102,8 +104,9 @@ const CreateNewSupplier = ({ createNewTask, values, userID }) => {
                 value: status.productLaunchDetailsStatusUUID,
               };
             });
-            fields_1[3].items = status;
-            fields_1[4].items = priority;
+            fields_1[0].items = taskList;
+            fields_1[4].items = status;
+            fields_1[5].items = priority;
 
             //setting the status and priority to the state to send back to the parent
             //make ease for the react
@@ -137,58 +140,68 @@ const CreateNewSupplier = ({ createNewTask, values, userID }) => {
   // use effect used for loading the companies names from the API
   useEffect(async () => {
     await getStatusandPriority();
+
+    // fields_1[0].items = taskList;
+    // setFields(fields_1);
+    // setFieldsLoading(false);
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {fieldsLoading === true ? (
-        <Spinner />
-      ) : (
-        <div className="flex flex-row" style={{ display: "flex" }}>
-          {fields.map(({ name, label, value, type, ...rest }) => (
-            <Fragment key={label}>
-              {type === "select" ? (
-                <Controller
-                  control={control}
-                  name={name}
-                  value={value}
-                  render={({
-                    field: { onChange, value },
-                    fieldState: { error },
-                  }) => (
-                    <div className="p-2">
-                      <Select
-                        value={value}
-                        label={label}
-                        onChange={onChange}
-                        selectedValue={
-                          name === "status" ? selectedStatus : selectedPriority
-                        }
-                        error={error}
-                        {...rest}
-                      />
-                    </div>
-                  )}
-                />
-              ) : (
-                <div className="p-2">
-                  <Input
-                    key={name}
-                    label={label}
-                    error={errors[name]?.message}
-                    type={type}
-                    {...register(name)}
-                    {...rest}
+    <div className="mb-5">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {fieldsLoading === true ? (
+          <Spinner />
+        ) : (
+          <div className="flex flex-row" style={{ display: "flex" }}>
+            {fields.map(({ name, label, value, type, ...rest }) => (
+              <Fragment key={label}>
+                {type === "select" ? (
+                  <Controller
+                    control={control}
+                    name={name}
+                    value={value}
+                    render={({
+                      field: { onChange, value },
+                      fieldState: { error },
+                    }) => (
+                      <div className="p-2">
+                        <Select
+                          value={value}
+                          label={label}
+                          onChange={onChange}
+                          selectedValue={
+                            name === "status"
+                              ? selectedStatus
+                              : name === "priority"
+                              ? selectedPriority
+                              : selectTaskList
+                          }
+                          error={error}
+                          {...rest}
+                        />
+                      </div>
+                    )}
                   />
-                </div>
-              )}
-            </Fragment>
-          ))}
-        </div>
-      )}
-      <SubmitButton>Create</SubmitButton>
-    </form>
+                ) : (
+                  <div className="p-2">
+                    <Input
+                      key={name}
+                      label={label}
+                      error={errors[name]?.message}
+                      type={type}
+                      {...register(name)}
+                      {...rest}
+                    />
+                  </div>
+                )}
+              </Fragment>
+            ))}
+          </div>
+        )}
+        <SubmitButton>Create</SubmitButton>
+      </form>
+    </div>
   );
 };
 
-export default CreateNewSupplier;
+export default Add_Task_Row;

@@ -1,5 +1,3 @@
-import { useContext } from "react";
-
 import { DashboardLayout } from "layouts";
 import {
   FadedButton,
@@ -11,7 +9,6 @@ import {
   Chip,
 } from "components";
 import { taskTableColumns, table } from "constants/pages/trackerProduct";
-import { ModalContext } from "store/modalContext";
 import * as S from "./styles";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -21,6 +18,9 @@ import {
 } from "APIs/Product Launch/productLaunch";
 import { callErrorToast } from "components/Toast/toast";
 import { callSuccessToast } from "components/Toast/toast";
+import Add_Task_Row from "components/Forms/Add Task Row/AddTask Row";
+import AddTask from "components/Forms/Add Task/AddTask";
+import { AddTaskList } from "components/Forms";
 
 const TrackerProduct = ({
   location: {
@@ -28,11 +28,15 @@ const TrackerProduct = ({
   },
   id,
 }) => {
-  const { onShow: showModal } = useContext(ModalContext);
   const [loadingStatus, setloadingStatus] = useState(true);
   const [tableData, setTable] = useState([]);
   const [productTrackerTitle, setproductTrackerTitle] = useState(null);
   const [productTrackerComment, setproductTrackerComment] = useState(null);
+  const [appearForm, setAppearForm] = useState(null);
+  const [appearNewTaskListForm, setappearNewTaskListForm] = useState(null);
+  const [displayAddTask, setDisplayAddTask] = useState(false);
+  const [taskList, setTaskList] = useState();
+  const [updateTable, setUpdateTable] = useState(false);
 
   //create new task list on submit of the model
   const createTaskList = (data) => {
@@ -53,31 +57,50 @@ const TrackerProduct = ({
   };
 
   //create new task on submit of the model
-  const addNewTask = (data, productLaunchListsUUID, status, priority) => {
+  const addNewTask = (
+    data,
+    finalDate,
+    productLaunchListsUUID,
+    status,
+    priority,
+    uuid
+  ) => {
+    console.log(data);
     setloadingStatus(true);
-    var newTask = [
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <span style={{ marginRight: "10px", color: "#c4c4c4" }}>
-          <Icon width={22} height={22} name="check-circle-outline" />
+    var newTask = {
+      uuid,
+      title: (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ marginRight: "10px", color: "#c4c4c4" }}>
+            <Icon width={22} height={22} name="check-circle-outline" />
+          </span>
+          {data.taskName}
+        </div>
+      ),
+      date: finalDate,
+      assigned: data.taskAssignedTo,
+      status: (
+        <span
+          style={{
+            padding: "8px",
+            borderRadius: "10px",
+            backgroundColor: status.productLaunchDetailsColor,
+            color: "white",
+          }}
+        >
+          {status.productLaunchDetailsTitle}
         </span>
-        {data.taskName}
-      </div>,
-      data.taskDate.toString(),
-      data.taskAssignedTo,
+      ),
+      priority: (
+        <Chip
+          type="priority"
+          chipStyle={priority.productLaunchDetailsPriorityTitle}
+          color={priority.productLaunchDetailsPriorityColor}
+        />
+      ),
+      comment: data.comments,
+    };
 
-      <Chip
-        type="status"
-        chipStyle={status.productLaunchDetailsTitle}
-        color={status.productLaunchDetailsColor}
-      />,
-      <Chip
-        type="priority"
-        chipStyle={priority.productLaunchDetailsPriorityTitle}
-        color={priority.productLaunchDetailsPriorityColor}
-      />,
-
-      data.comments,
-    ];
     setTable((prev) =>
       prev.map((taskListDetails) => {
         if (taskListDetails.productLaunchListsUUID === productLaunchListsUUID) {
@@ -99,27 +122,12 @@ const TrackerProduct = ({
 
   //create new task modal
   const onCreateNewTask = (values) => {
-    //passing values to keep track of which task list is it
-    showModal({
-      title: "Create New Task",
-      content: (
-        <Forms.AddTask createNewTask={addNewTask} values={values} userID={id} />
-      ),
-    });
+    setDisplayAddTask(true);
   };
 
   //create new task list modal
   const onCreateNewTaskList = () => {
-    showModal({
-      title: "Create New List",
-      content: (
-        <Forms.AddTaskList
-          createNewTaskList={createTaskList}
-          productInfo={productInfo}
-          userID={id}
-        />
-      ),
-    });
+    setappearNewTaskListForm(!appearNewTaskListForm);
   };
 
   //on load of the component
@@ -127,12 +135,18 @@ const TrackerProduct = ({
     setloadingStatus(true);
     getProductTrackingDetails(productInfo.productLaunchUUID)
       .then((result) => {
+        const dbTaskList = result.productLaunchTaskLists.map((task) => ({
+          label: task.productLaunchListsTitle,
+          value: task.productLaunchListsUUID,
+        }));
+        setTaskList(dbTaskList);
         setproductTrackerTitle(result.productLaunchDetails.productLaunchTitle);
         setproductTrackerComment(
           result.productLaunchDetails.productLaunchComments
         );
 
         createTaskTable(result.productLaunchTaskLists);
+        setUpdateTable(false);
       })
       .catch((err) => {
         console.log(err);
@@ -140,57 +154,70 @@ const TrackerProduct = ({
       });
 
     setloadingStatus(false);
-  }, []);
+  }, [updateTable]);
 
   //creating the table according to the API response
   const createTaskTable = (taskLists) => {
     setloadingStatus(true);
     const data = taskLists.map((Task) => ({
       productLaunchListsTitle: (
-        <FadedButton
-          onClick={() => onCreateNewTask(Task)}
-          icon="add-filled"
-          value={Task}
-        >
-          {Task.productLaunchListsTitle}
-        </FadedButton>
+        <>
+          <div style={{ cursor: "pointer" }} value={Task}>
+            {Task.productLaunchListsTitle}
+            <Icon width={35} height={15} name="add-filled" />
+          </div>
+          <div>
+            <div style={{ display: "none" }} id={Task.productLaunchListsUUID}>
+              <AddTask createNewTask={addNewTask} values={Task} userID={id} />
+            </div>
+          </div>
+        </>
       ),
       productLaunchListsUUID: Task.productLaunchListsUUID,
       tasklist:
         Task.ProductLaunchDetails.length === 0
           ? []
-          : Task.ProductLaunchDetails.map((details) => [
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <span style={{ marginRight: "10px", color: "#c4c4c4" }}>
-                  <Icon width={22} height={22} name="check-circle-outline" />
+          : Task.ProductLaunchDetails.map((details) => ({
+              uuid: details.productLaunchDetailsUUID,
+              title: (
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <span style={{ marginRight: "10px", color: "#c4c4c4" }}>
+                    <Icon width={22} height={22} name="check-circle-outline" />
+                  </span>
+                  {details.productLaunchDetailsTitle}
+                </div>
+              ),
+              date: details.productLaunchDetailsDueDate,
+              assigned: details.productLaunchDetailsAssigned,
+              status: (
+                <span
+                  style={{
+                    padding: "8px",
+                    borderRadius: "10px",
+                    backgroundColor:
+                      details.ProductLaunchDetailsStatus
+                        .productLaunchDetailsColor,
+                    color: "white",
+                  }}
+                >
+                  {details.ProductLaunchDetailsStatus.productLaunchDetailsTitle}{" "}
                 </span>
-                {details.productLaunchDetailsTitle}
-              </div>,
-
-              details.productLaunchDetailsDueDate,
-              details.productLaunchDetailsAssigned,
-              <Chip
-                type="status"
-                chipStyle={
-                  details.ProductLaunchDetailsStatus.productLaunchDetailsTitle
-                }
-                color={
-                  details.ProductLaunchDetailsStatus.productLaunchDetailsColor
-                }
-              />,
-              <Chip
-                type="priority"
-                chipStyle={
-                  details.ProductLaunchDetailsPriority
-                    .productLaunchDetailsPriorityTitle
-                }
-                color={
-                  details.ProductLaunchDetailsPriority
-                    .productLaunchDetailsPriorityColor
-                }
-              />,
-              details.productLaunchDetailsComments,
-            ]),
+              ),
+              priority: (
+                <Chip
+                  type="priority"
+                  chipStyle={
+                    details.ProductLaunchDetailsPriority
+                      .productLaunchDetailsPriorityTitle
+                  }
+                  color={
+                    details.ProductLaunchDetailsPriority
+                      .productLaunchDetailsPriorityColor
+                  }
+                />
+              ),
+              comment: details.productLaunchDetailsComments,
+            })),
     }));
     setTable(data);
     setloadingStatus(false);
@@ -201,6 +228,9 @@ const TrackerProduct = ({
   };
   const enteredTitle = (event) => {
     setproductTrackerTitle(event.target.value);
+  };
+  const showForm = () => {
+    setAppearForm(!appearForm);
   };
   const updateFields_BTN = async () => {
     if ((productTrackerComment, productTrackerComment)) {
@@ -222,6 +252,10 @@ const TrackerProduct = ({
     } else {
       callErrorToast("All Fields are Required");
     }
+  };
+
+  const updateAfterTable = () => {
+    setUpdateTable(true);
   };
 
   return (
@@ -262,11 +296,40 @@ const TrackerProduct = ({
           </S.Section>
           <S.Section>
             <S.TaskButtons>
-              <FadedButton onClick={onCreateNewTaskList} icon="add-filled">
+              <S.FadedButton onClick={showForm}>
+                <Icon width={25} height={15} name="add-filled" />
+                New Task
+              </S.FadedButton>
+              <S.FadedButton onClick={onCreateNewTaskList}>
+                <Icon width={25} height={15} name="add-filled" />
                 New Task List
-              </FadedButton>
+              </S.FadedButton>
             </S.TaskButtons>
-            <TaskTable table={tableData} columns={taskTableColumns} />
+            {appearForm === true ? (
+              <Add_Task_Row
+                taskList={taskList}
+                createNewTask={addNewTask}
+                userID={id}
+                updateAddedStatus={() => showForm()}
+              />
+            ) : (
+              ""
+            )}
+            {appearNewTaskListForm === true ? (
+              <AddTaskList
+                createNewTaskList={createTaskList}
+                productInfo={productInfo}
+                userID={id}
+                updateAddedStatus={() => onCreateNewTaskList()}
+              />
+            ) : (
+              ""
+            )}
+            <TaskTable
+              table={tableData}
+              columns={taskTableColumns}
+              updateTable={updateAfterTable}
+            />
           </S.Section>
         </div>
       )}

@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import { Drawer, Modal, Toast } from "components";
 import { useState } from "react";
 import { paths } from "routes/paths";
+import { routes } from "routes/index";
 import * as Page from "pages";
 import { loginAPI } from "APIs/Web Controls/webControls";
 import { callSuccessToast, callErrorToast } from "components/Toast/toast";
@@ -40,8 +41,11 @@ const App = () => {
   return (
     <>
       <Switch>
+        {routes.map((route) => (
+          <Route path={route.path} {...route} key={route.path} />
+        ))}
         {/* Login  Route */}
-        <Route
+        {/* <Route
           render={(props) => (
             <Page.Login
               {...props}
@@ -54,8 +58,8 @@ const App = () => {
           exact={true}
           path={paths.login}
         />
-        {/*------------------------------------------------------------------------------- */}
-        {/* sign up Route */}
+        {/*------------------------------------------------------------------------------- *
+        {/* sign up Route *
         <Route
           render={(props) => (
             <Page.SignUp
@@ -68,9 +72,9 @@ const App = () => {
           exact={true}
           path={paths.signup}
         />
-        {/*------------------------------------------------------------------------------- */}
+        {/*------------------------------------------------------------------------------- *
 
-        {/* Home  Route */}
+        {/* Home  Route *
         <Route
           render={(props) => (
             <Page.Home
@@ -83,9 +87,9 @@ const App = () => {
           exact={true}
           path={paths.home}
         />
-        {/*------------------------------------------------------------------------------- */}
+        {/*------------------------------------------------------------------------------- *
 
-        {/* Supplier Management Route */}
+        {/* Supplier Management Route *
         <Route
           render={(props) =>
             loggedIn === true ? (
@@ -101,8 +105,8 @@ const App = () => {
           exact={true}
           path={paths.supplierManagement}
         />
-        {/*------------------------------------------------------------------------------- */}
-        {/*Management of Supplier  Route */}
+        {/*------------------------------------------------------------------------------- *
+        {/*Management of Supplier  Route *
         <Route
           render={(props) =>
             loggedIn === true ? (
@@ -118,9 +122,9 @@ const App = () => {
           exact={true}
           path={paths.supplierManagementSupplier}
         />
-        {/*------------------------------------------------------------------------------- */}
+        {/*------------------------------------------------------------------------------- *
 
-        {/*Supplier Comparison  Route */}
+        {/*Supplier Comparison  Route *
         <Route
           render={(props) =>
             loggedIn === true ? (
@@ -136,9 +140,9 @@ const App = () => {
           exact={true}
           path={paths.supplierComparison}
         />
-        {/*------------------------------------------------------------------------------- */}
+        {/*------------------------------------------------------------------------------- *
 
-        {/*Supplier Comparison of detailed page  Route */}
+        {/*Supplier Comparison of detailed page  Route *
         <Route
           render={(props) =>
             loggedIn === true ? (
@@ -154,9 +158,9 @@ const App = () => {
           exact={true}
           path={paths.supplierComparisonSupplier}
         />
-        {/*------------------------------------------------------------------------------- */}
+        {/*------------------------------------------------------------------------------- *
 
-        {/*Product Launch Tracker  Route */}
+        {/*Product Launch Tracker  Route *
         <Route
           render={(props) =>
             loggedIn === true ? (
@@ -172,9 +176,9 @@ const App = () => {
           exact={true}
           path={paths.productLaunchTracker}
         />
-        {/*------------------------------------------------------------------------------- */}
+        {/*------------------------------------------------------------------------------- *
 
-        {/*Product Launch Tracker detailed Page  Route */}
+        {/*Product Launch Tracker detailed Page  Route *
         <Route
           render={(props) =>
             loggedIn === true ? (
@@ -190,9 +194,9 @@ const App = () => {
           exact={true}
           path={paths.productLaunchTrackerProduct}
         />
-        {/*------------------------------------------------------------------------------- */}
+        {/*------------------------------------------------------------------------------- *
 
-        {/* Daily Operations Notes  Route */}
+        {/* Daily Operations Notes  Route *
         <Route
           render={(props) =>
             loggedIn === true ? (
@@ -208,9 +212,9 @@ const App = () => {
           exact={true}
           path={paths.dailyOperationsNotes}
         />
-        {/*------------------------------------------------------------------------------- */}
+        {/*------------------------------------------------------------------------------- *
 
-        {/* Daily Operations Notes New Note  Route */}
+        {/* Daily Operations Notes New Note  Route *
         <Route
           render={(props) =>
             loggedIn === true ? (
@@ -226,9 +230,9 @@ const App = () => {
           exact={true}
           path={paths.dailyOperationsNotesNewNote}
         />
-        {/*------------------------------------------------------------------------------- */}
+        {/*------------------------------------------------------------------------------- *
 
-        {/* Products Management  Route */}
+        {/* Products Management  Route *
         <Route
           render={(props) =>
             loggedIn === true ? (
@@ -244,9 +248,9 @@ const App = () => {
           exact={true}
           path={paths.productManagement}
         />
-        {/*------------------------------------------------------------------------------- */}
+        {/*------------------------------------------------------------------------------- *
 
-        {/* Products Management  Route */}
+        {/* Products Management  Route *
         <Route
           render={(props) =>
             loggedIn === true ? (
@@ -258,9 +262,9 @@ const App = () => {
           exact={true}
           path={paths.productManagementProduct}
         />
-        {/*------------------------------------------------------------------------------- */}
+        {/*------------------------------------------------------------------------------- *
 
-        {/* Invoice Management Route */}
+        {/* Invoice Management Route *
         <Route
           render={(props) =>
             loggedIn === true ? (
@@ -275,7 +279,7 @@ const App = () => {
           }
           exact={true}
           path={paths.invoiceManagement}
-        />
+        /> */}
         {/*------------------------------------------------------------------------------- */}
         <Route path={"*"} component={Page.NotFound} />
       </Switch>

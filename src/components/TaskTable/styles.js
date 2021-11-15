@@ -1,16 +1,19 @@
 import styled from "styled-components";
 
 import theme from "theme";
-
+//  width: 100%;
 export const Table = styled.section`
-  width: 100%;
+  overflow-y: auto;
 `;
 
 export const GridRow = styled.div.attrs((props) => ({
   columnCount: props.columnCount || 4,
 }))`
   display: grid;
-  grid-template-columns: minmax(400px, 1fr) repeat(${(p) => p.columnCount - 1}, minmax(150px, 1fr));
+  grid-template-columns: minmax(50px, 1fr) repeat(
+      ${(p) => p.columnCount - 1},
+      minmax(50px, 1fr)
+    );
 `;
 
 export const TableHeader = styled(GridRow)`
@@ -59,12 +62,17 @@ export const TableHeaderCell = styled.div`
 `;
 
 export const TableCell = styled.div`
+  margin-right: 10px;
   color: ${theme.main.colors.text};
+  ${"" /* margin: 10px; */}
+  width: 100%;
+  min-width: 100%;
 `;
 
 export const TableRow = styled(GridRow)`
   padding: 10px 0;
   align-items: center;
+  ${"" /* overflow-y: auto; */}
 
   & + & {
     border-top: 1px solid #f5f5f5;
