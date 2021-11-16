@@ -128,7 +128,7 @@ const TaskTable = ({ columns, table, onToggle, updateTable }) => {
               </div>
               <div
                 style={{
-                  margin: "0px 80px",
+                  margin: "0px 120px",
                   fontWeight: "800",
                   textTransform: "uppercase",
                   color: "#a5a5a5",
@@ -139,7 +139,7 @@ const TaskTable = ({ columns, table, onToggle, updateTable }) => {
               </div>
               <div
                 style={{
-                  margin: "0px 60px",
+                  margin: "0px 10px",
                   fontWeight: "800",
                   textTransform: "uppercase",
                   color: "#a5a5a5",

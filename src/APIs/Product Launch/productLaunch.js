@@ -3,6 +3,7 @@ import {
   addNewProduct_toLaunch,
   addNewTask,
   baseURL,
+  checkedProductLaunchDetails,
   createTaskList,
   deleteProductLaunchDetails,
   editProductLaunchDetails,
@@ -199,6 +200,17 @@ export const deleteProductLaunchDetailsRow = async (uuid) => {
   return new Promise((resolve, reject) => {
     axios
       .put(baseURL + deleteProductLaunchDetails, {
+        uuid,
+      })
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};
+//PUT
+export const checkedProductLaunchDetailsTask = async (uuid) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(baseURL + checkedProductLaunchDetails, {
         uuid,
       })
       .then((response) => resolve(response.data))

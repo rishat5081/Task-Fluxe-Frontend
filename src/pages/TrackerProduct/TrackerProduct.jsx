@@ -13,6 +13,7 @@ import * as S from "./styles";
 import { useState } from "react";
 import { useEffect } from "react";
 import {
+  checkedProductLaunchDetailsTask,
   getProductTrackingDetails,
   updateProductLaunchInformation,
 } from "APIs/Product Launch/productLaunch";
@@ -72,7 +73,11 @@ const TrackerProduct = ({
       title: (
         <div style={{ display: "flex", alignItems: "center" }}>
           <span style={{ marginRight: "10px", color: "#c4c4c4" }}>
-            <Icon width={22} height={22} name="check-circle-outline" />
+            <S.CheckBox
+              className="checkbox-circle"
+              type="checkbox"
+              onChange={() => checkBoxonChange(uuid)}
+            />
           </span>
           {data.taskName}
         </div>
@@ -164,6 +169,7 @@ const TrackerProduct = ({
         <>
           <div style={{ cursor: "pointer" }} value={Task}>
             {Task.productLaunchListsTitle}
+
             <Icon width={35} height={15} name="add-filled" />
           </div>
           <div>
@@ -181,8 +187,24 @@ const TrackerProduct = ({
               uuid: details.productLaunchDetailsUUID,
               title: (
                 <div style={{ display: "flex", alignItems: "center" }}>
-                  <span style={{ marginRight: "10px", color: "#c4c4c4" }}>
-                    <Icon width={22} height={22} name="check-circle-outline" />
+                  <span
+                    style={{
+                      marginRight: "10px",
+                      color: "#c4c4c4",
+                    }}
+                  >
+                    <S.CheckBox
+                      className="checkbox-circle"
+                      type="checkbox"
+                      defaultChecked={
+                        details.productLaunchDetailsChecked === true
+                          ? "Checked"
+                          : ""
+                      }
+                      onChange={() =>
+                        checkBoxonChange(details.productLaunchDetailsUUID)
+                      }
+                    />
                   </span>
                   {details.productLaunchDetailsTitle}
                 </div>
@@ -256,6 +278,16 @@ const TrackerProduct = ({
 
   const updateAfterTable = () => {
     setUpdateTable(true);
+  };
+
+  const checkBoxonChange = async (uuid) => {
+    checkedProductLaunchDetailsTask(uuid)
+      .then((result) => {
+        if (result.status === "Updated") callSuccessToast("Task Updated");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

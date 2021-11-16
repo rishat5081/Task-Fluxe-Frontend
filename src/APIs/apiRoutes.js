@@ -95,3 +95,5 @@ export const editProductLaunchDetails =
   "/productLaunch/editProductLaunchDetails";
 export const deleteProductLaunchDetails =
   "/productLaunch/deleteProductLaunchDetails";
+export const checkedProductLaunchDetails =
+  "/productLaunch/checkedProductLaunchDetails";

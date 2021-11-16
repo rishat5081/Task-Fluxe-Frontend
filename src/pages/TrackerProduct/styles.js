@@ -79,16 +79,8 @@ export const FadedButton = styled.button`
   border-radius: 16px;
 `;
 
-// export const FadedButton = styled(Button)`
-//   display: flex;
-//   align-items: center;
-
-//   font-size: ${theme.font.sm.size};
-//   font-weight: 700;
-
-//   color: #555555;
-//   background-color: #fafafa;
-
-//   padding: 10px 20px;
-//   border-radius: 16px;
-// `;
+export const CheckBox = styled.input`
+  transform: scale(1.2);
+  cursor: pointer;
+  filter: hue-rotate(280deg);
+`;
