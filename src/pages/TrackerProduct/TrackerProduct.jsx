@@ -212,18 +212,15 @@ const TrackerProduct = ({
               date: details.productLaunchDetailsDueDate,
               assigned: details.productLaunchDetailsAssigned,
               status: (
-                <span
-                  style={{
-                    padding: "8px",
-                    borderRadius: "10px",
-                    backgroundColor:
-                      details.ProductLaunchDetailsStatus
-                        .productLaunchDetailsColor,
-                    color: "white",
-                  }}
-                >
-                  {details.ProductLaunchDetailsStatus.productLaunchDetailsTitle}{" "}
-                </span>
+                <Chip
+                  type="status"
+                  chipStyle={
+                    details.ProductLaunchDetailsStatus.productLaunchDetailsTitle
+                  }
+                  color={
+                    details.ProductLaunchDetailsStatus.productLaunchDetailsColor
+                  }
+                />
               ),
               priority: (
                 <Chip
@@ -320,7 +317,7 @@ const TrackerProduct = ({
               </S.DescWrapper>
             </S.TrackerProductDetail>
             <button
-              className="btn btn-primary btn-sm mt-5"
+              className="btn btn-primary btn-sm"
               onClick={updateFields_BTN}
             >
               {" Update"}

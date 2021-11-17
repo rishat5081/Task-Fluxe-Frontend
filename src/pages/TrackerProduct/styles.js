@@ -11,10 +11,6 @@ export const Section = styled.section`
 
 export const TrackerProductDetail = styled.div`
   display: flex;
-
-  & + & {
-    margin-top: 40px;
-  }
 `;
 
 export const Input = styled.input`

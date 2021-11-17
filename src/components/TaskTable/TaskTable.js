@@ -79,12 +79,13 @@ const TaskTable = ({ columns, table, onToggle, updateTable }) => {
   };
 
   const handleEditAbleRow = (event, column) => {
+    console.log();
     const formValues = {
       assigned: column.assigned,
       comments: column.comment,
       date: column.date,
       priority: column.priority.props.chipStyle,
-      status: column.status.props.children[0],
+      status: column.status.props.chipStyle,
       title: column.title.props.children[1],
       uuid: column.uuid,
     };
@@ -128,7 +129,7 @@ const TaskTable = ({ columns, table, onToggle, updateTable }) => {
               </div>
               <div
                 style={{
-                  margin: "0px 120px",
+                  margin: "0px 200px",
                   fontWeight: "800",
                   textTransform: "uppercase",
                   color: "#a5a5a5",
@@ -139,7 +140,7 @@ const TaskTable = ({ columns, table, onToggle, updateTable }) => {
               </div>
               <div
                 style={{
-                  margin: "0px 10px",
+                  margin: "0px 0px 0px -60px",
                   fontWeight: "800",
                   textTransform: "uppercase",
                   color: "#a5a5a5",
@@ -150,7 +151,7 @@ const TaskTable = ({ columns, table, onToggle, updateTable }) => {
               </div>
               <div
                 style={{
-                  margin: "0px 60px",
+                  margin: "0px 180px",
                   fontWeight: "800",
                   textTransform: "uppercase",
                   color: "#a5a5a5",
@@ -161,7 +162,7 @@ const TaskTable = ({ columns, table, onToggle, updateTable }) => {
               </div>
               <div
                 style={{
-                  margin: "0px 60px",
+                  margin: "0px 10px",
                   fontWeight: "800",
                   textTransform: "uppercase",
                   color: "#a5a5a5",
@@ -172,7 +173,7 @@ const TaskTable = ({ columns, table, onToggle, updateTable }) => {
               </div>
               <div
                 style={{
-                  margin: "0px 60px",
+                  margin: "0px 150px",
                   fontWeight: "800",
                   textTransform: "uppercase",
                   color: "#a5a5a5",

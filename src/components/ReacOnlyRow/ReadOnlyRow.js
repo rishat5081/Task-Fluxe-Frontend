@@ -5,7 +5,7 @@ import { Fragment } from "react";
 const ReadOnlyRow = ({ column, handleEditAbleRow, handleDeleteRow }) => {
   return (
     <Fragment>
-      <div style={{ width: "70%" }}>{column.title}</div>
+      <div style={{ width: "100%" }}>{column.title}</div>
       <div style={{ marginLeft: "20%" }}>{column.date}</div>
       <div>{column.assigned}</div>
       <div>{column.status}</div>
