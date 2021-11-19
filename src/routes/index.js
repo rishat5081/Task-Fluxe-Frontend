@@ -83,7 +83,13 @@ import * as P from "pages";
 import { paths } from "./paths";
 
 export const routes = [
-  { path: paths.home, public: true, exact: true, component: P.Home },
+  {
+    path: paths.home,
+    public: true,
+    exact: true,
+    component: (props) => <P.SupplierManagement {...props} id={1} />,
+    // component: P.Home
+  },
   {
     path: paths.login,
     public: true,
