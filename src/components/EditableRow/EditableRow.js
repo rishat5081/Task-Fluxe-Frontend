@@ -4,7 +4,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Fragment } from "react";
-import "./style.css";
+import * as Style from "./style";
 
 const EditableRow = ({
   editAbleFormValues,
@@ -83,7 +83,7 @@ const EditableRow = ({
         <Spinner />
       ) : (
         <>
-          <input
+          <Style.Input
             defaultValue={editAbleFormValues.title}
             type="text"
             placeholder="Enter the Title"
@@ -92,7 +92,7 @@ const EditableRow = ({
               handleEditFormChange(event);
             }}
           />
-          <input
+          <Style.Input
             defaultValue={editAbleFormValues.date}
             type="date"
             placeholder="Enter the Date"
@@ -101,7 +101,7 @@ const EditableRow = ({
               handleEditFormChange(event);
             }}
           />
-          <input
+          <Style.Input
             defaultValue={editAbleFormValues.assigned}
             type="text"
             placeholder="Assigned To"
@@ -110,7 +110,7 @@ const EditableRow = ({
               handleEditFormChange(event);
             }}
           />
-          <select
+          <Style.Select
             name="status"
             onChange={(event) => {
               handleEditFormChange(event);
@@ -122,8 +122,8 @@ const EditableRow = ({
                 {optStatus.label}{" "}
               </option>
             ))}
-          </select>
-          <select
+          </Style.Select>
+          <Style.Select
             name="priority"
             onChange={(event) => {
               handleEditFormChange(event);
@@ -135,8 +135,8 @@ const EditableRow = ({
                 {optStatus.label}{" "}
               </option>
             ))}
-          </select>
-          <textarea
+          </Style.Select>
+          <Style.Textarea
             type="text"
             placeholder="Enter the Comments"
             name="comments"

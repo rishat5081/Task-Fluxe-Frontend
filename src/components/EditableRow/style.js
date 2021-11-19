@@ -1,28 +1,20 @@
-input {
-  margin: 10px;
-  padding: 5px;
-  border-radius: 10px;
-  border: 1px solid #a5a5a5;
-}
-select {
-  margin: 10px;
-  padding: 5px;
-  border-radius: 10px;
-  border: 1px solid #a5a5a5;
-}
+import styled from "styled-components";
 
-select > option {
+export const Input = styled.input`
   margin: 10px;
   padding: 5px;
   border-radius: 10px;
   border: 1px solid #a5a5a5;
-}
-textarea {
-  text-align: justify;
+`;
+export const Select = styled.select`
   margin: 10px;
-  min-height: 90px;
-  width: 120%;
   padding: 5px;
   border-radius: 10px;
   border: 1px solid #a5a5a5;
-}
+`;
+export const Textarea = styled.textarea`
+  margin: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #a5a5a5;
+`;
