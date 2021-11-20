@@ -1,6 +1,7 @@
 import {
   baseURL,
   create_a_NewInvoices,
+  deleteInvoiceAttachment,
   getAllInvoices,
   getAllSupplierNames,
   getSelectedInvoice,
@@ -106,6 +107,18 @@ export const updateInvoiceFile = async (formData) => {
           );
           callSuccessToast(`Uploading File ${percentage}%`);
         },
+      })
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};
+//put
+//deleting the files to supplier
+export const deleteInvoiceFile = async (invoiceUUID) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(baseURL + deleteInvoiceAttachment, {
+        invoiceUUID,
       })
       .then((response) => resolve(response.data))
       .catch(reject);

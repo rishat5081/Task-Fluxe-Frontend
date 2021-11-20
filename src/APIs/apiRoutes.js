@@ -24,6 +24,7 @@ export const addProduct_toSupplier = "/supplier/addProductToSupplier";
 export const addNote_toSupplier = "/supplier/addNoteToSupplier";
 export const uploadCompanyImages = "/company/uploadCompanyImage";
 export const uploadSupplierFiles = "/supplier/uploadSupplierFiles";
+export const deleteSupplierFiles = "/supplier/deleteAttachment";
 // ------------------------------------ End of Supplier Management Page ------------------------------------------------
 /**
  *
@@ -40,6 +41,7 @@ export const create_a_NewInvoices = "/invoice/createInvoice";
 export const getSelectedInvoice = "/invoice/getSelectedInvoice";
 export const updateInvoice = "/invoice/updateInvoice";
 export const updateInvoiceAttachment = "/invoice/updateInvoiceAttachment";
+export const deleteInvoiceAttachment = "/invoice/deleteInvoiceAttachment";
 
 // ------------------------------------ End of Invoice Management Page ------------------------------------------------
 /**

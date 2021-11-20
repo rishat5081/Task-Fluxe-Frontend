@@ -17,6 +17,7 @@ import { fields, invoiceFields, schema } from "./invoiceSchema.jsx";
 import { callErrorToast, callSuccessToast } from "components/Toast/toast";
 import { Controller } from "react-hook-form";
 import {
+  deleteInvoiceFile,
   getInvoiceDetails,
   updateInvoiceAPI,
   updateInvoiceFile,
@@ -244,6 +245,43 @@ const Invoice = ({ invoiceUUID, id }) => {
     //adding text to the note state
   };
 
+  //removing the attachment
+  const removeAttachment = async (attachmentName, attachmentPath) => {
+    setLoading(true);
+
+    await deleteInvoiceFile(invoiceUUID)
+      .then((result) => {
+        console.log(result);
+        if (result.status === "success") {
+          callSuccessToast(result.message);
+          setInvoiceAttachment(null);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.status === "error") {
+          callErrorToast(err.message);
+          setLoading(false);
+        }
+      });
+
+    // await deleteAttachment(fileUUID)
+    //   .then((result) => {
+    //     if (result.status === "success") {
+    //       callSuccessToast(result.message);
+    //       const filteredFiles = supplierFiles.filter(
+    //         (file) => file.fileUUID !== fileUUID
+    //       );
+    //       setSupplierFiles(filteredFiles);
+    //          setLoading(false);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     if (err.status === "error") callErrorToast(err.message);
+    //   });
+  };
+
   return (
     <React.Fragment>
       <div style={{ width: "75%" }}>
@@ -334,6 +372,16 @@ const Invoice = ({ invoiceUUID, id }) => {
                   >
                     {invoiceAttachment}
                   </S.AttachmentName>
+
+                  <div
+                    className="ml-5"
+                    style={{ marginLeft: "10px", color: "red" }}
+                    onClick={() =>
+                      removeAttachment(invoiceAttachment, invoiceAttachmentPath)
+                    }
+                  >
+                    <Icon name="close" />
+                  </div>
                 </S.Attachment>
               )}
             </S.Attachments>

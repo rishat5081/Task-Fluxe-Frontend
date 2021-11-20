@@ -18,6 +18,7 @@ import {
   addFilestoSupplier,
   addNotestoSupplier,
   addProducttoSupplier,
+  deleteAttachment,
   getSupplierCompanyDetails,
   updateSupplierCompanyInfo,
 } from "APIs/Supplier/supplierApi";
@@ -228,7 +229,6 @@ const Supplier = ({ id, companyInfo, supplierId }) => {
               ...supplierFiles,
               { fileTitle: response.fileTitle, filePath: response.filePath },
             ];
-            console.log(newFiles);
             setSupplierFiles(newFiles);
             callSuccessToast(`File Uploading Successfully`);
             return;
@@ -245,6 +245,26 @@ const Supplier = ({ id, companyInfo, supplierId }) => {
   //setting default image if the image src have any error then this image will be displayed
   const setDefaultImage = (event) =>
     (event.target.src = "/assets/images/supplier-pic.png");
+
+  //removing the attachment
+  const removeAttachment = async (fileUUID) => {
+    setLoadingData(true);
+
+    await deleteAttachment(fileUUID)
+      .then((result) => {
+        if (result.status === "success") {
+          callSuccessToast(result.message);
+          const filteredFiles = supplierFiles.filter(
+            (file) => file.fileUUID !== fileUUID
+          );
+          setSupplierFiles(filteredFiles);
+          setLoadingData(false);
+        }
+      })
+      .catch((err) => {
+        if (err.status === "error") callErrorToast(err.message);
+      });
+  };
 
   return (
     <React.Fragment>
@@ -358,14 +378,23 @@ const Supplier = ({ id, companyInfo, supplierId }) => {
           <S.Attachments>
             {supplierFiles.length === 0
               ? "You Don't any Products"
-              : supplierFiles.map(({ filePath, fileTitle }, index) => (
-                  <S.Attachment key={index}>
-                    <Icon name="insert-drive-file" />
-                    <S.AttachmentName href={filePath} target="_blank">
-                      {fileTitle}
-                    </S.AttachmentName>
-                  </S.Attachment>
-                ))}
+              : supplierFiles.map(
+                  ({ filePath, fileUUID, fileTitle }, index) => (
+                    <S.Attachment key={index}>
+                      <Icon name="insert-drive-file" />
+                      <S.AttachmentName href={filePath} target="_blank">
+                        {fileTitle}
+                      </S.AttachmentName>
+                      <div
+                        className="ml-5"
+                        style={{ marginLeft: "10px", color: "red" }}
+                        onClick={() => removeAttachment(fileUUID)}
+                      >
+                        <Icon name="close" />
+                      </div>
+                    </S.Attachment>
+                  )
+                )}
           </S.Attachments>
         </S.Supplier>
       )}

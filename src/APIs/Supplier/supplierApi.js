@@ -3,6 +3,7 @@ import {
   addProduct_toSupplier,
   addSupplier,
   baseURL,
+  deleteSupplierFiles,
   getAllSupplierNames,
   getCompany_SupplierInformation,
   updateSupplier_CompanyInfo,
@@ -117,6 +118,17 @@ export const addFilestoSupplier = async (formData) => {
           );
           callSuccessToast(`Uploading File ${percentage}%`);
         },
+      })
+      .then((response) => resolve(response.data))
+      .catch(reject);
+  });
+};
+//adding the product to supplier
+export const deleteAttachment = async (fileUUID) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(baseURL + deleteSupplierFiles, {
+        fileUUID,
       })
       .then((response) => resolve(response.data))
       .catch(reject);
