@@ -1,5 +1,5 @@
 //export const baseURL = "http://localhost:8521";
-export const baseURL = "https://tranquil-sands-75428.herokuapp.com";
+export const baseURL = "https://lit-tor-97407.herokuapp.com";
 // ------------------------------------  Start of Supplier Management Page ------------------------------------------------
 export const signUp = "/controller/signUp";
 export const login = "/controller/login";
